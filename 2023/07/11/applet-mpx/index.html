@@ -1,699 +1,388 @@
-
-
 <!DOCTYPE html>
-<html lang="en" data-default-color-scheme=auto>
-
-
-
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/cat_2.svg">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
-  <meta http-equiv="x-ua-compatible" content="ie=edge">
-  
-  <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="Hengqu4">
-  <meta name="keywords" content="">
-  
-    <meta name="description" content="Mpx框架搭建一个飞书小程序Mpx-cli初始化项目安装Mpx脚手架 Mpx官网：https:&#x2F;&#x2F;mpxjs.cn&#x2F;guide&#x2F;basic&#x2F;start.html    全局安装: 12npm i -g @mpxjs&#x2F;climpx create mpx-project-name 也可以在不全局安装脚手架情况下创建项目:   1npx @mpxjs&#x2F;cli create mpx-project-nam">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="1.Mpx-cli初始化项目，2.导入飞书小程序配置，3.用mpx开发新页面以及配置相应的路由">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mpx框架搭建一个飞书小程序">
 <meta property="og:url" content="https://hengqu4.github.io/2023/07/11/applet-mpx/index.html">
-<meta property="og:site_name" content="Hengqu4&#39;s Blog">
-<meta property="og:description" content="Mpx框架搭建一个飞书小程序Mpx-cli初始化项目安装Mpx脚手架 Mpx官网：https:&#x2F;&#x2F;mpxjs.cn&#x2F;guide&#x2F;basic&#x2F;start.html    全局安装: 12npm i -g @mpxjs&#x2F;climpx create mpx-project-name 也可以在不全局安装脚手架情况下创建项目:   1npx @mpxjs&#x2F;cli create mpx-project-nam">
-<meta property="og:locale" content="en_US">
-<meta property="og:image" content="https://hengqu4.github.io/img/post/mpx.png">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:description" content="1.Mpx-cli初始化项目，2.导入飞书小程序配置，3.用mpx开发新页面以及配置相应的路由">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/tt_json.jpeg">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/serve-tt.jpeg">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/dist_tt.jpeg">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/open_dist.jpeg">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/open_ok.jpeg">
 <meta property="article:published_time" content="2023-07-11T08:43:45.000Z">
-<meta property="article:modified_time" content="2023-07-17T14:05:04.353Z">
-<meta property="article:author" content="Hengqu4">
+<meta property="article:modified_time" content="2023-07-19T10:49:45.215Z">
+<meta property="article:author" content="hengqu4">
 <meta property="article:tag" content="javascript">
 <meta property="article:tag" content="typescript">
 <meta property="article:tag" content="Mpx">
 <meta property="article:tag" content="小程序">
 <meta property="article:tag" content="飞书小程序">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://hengqu4.github.io/img/post/mpx.png">
-  
-  
-  
-  <title>Mpx框架搭建一个飞书小程序 - Hengqu4&#39;s Blog</title>
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hengqu4.github.io/2023/07/11/applet-mpx/tt_json.jpeg">
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/07/11/applet-mpx/">
 
 
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/07/11/applet-mpx/","path":"2023/07/11/applet-mpx/","title":"Mpx框架搭建一个飞书小程序"}</script>
 
-  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
-
-  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
-
-
-
-<!-- 主题依赖的图标库，不要自行修改 -->
-<!-- Do not modify the link that theme dependent icons -->
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
-
-
-
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
-
-
-<link  rel="stylesheet" href="/css/main.css" />
-
-
-  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
-  
-    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Mpx框架搭建一个飞书小程序 | Hengqu4</title>
   
 
 
 
 
-  <script id="fluid-configs">
-    var Fluid = window.Fluid || {};
-    Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"hengqu4.github.io","root":"/","version":"1.9.5-a","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml","include_content_in_search":true};
-
-    if (CONFIG.web_analytics.follow_dnt) {
-      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
-      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
-    }
-  </script>
-  <script  src="/js/utils.js" ></script>
-  <script  src="/js/color-schema.js" ></script>
-  
 
 
-  
-<meta name="generator" content="Hexo 6.3.0"></head>
 
 
-<body>
-  
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
 
-  <header>
-    
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
 
-<div class="header-inner" style="height: 70vh;">
-  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <strong>Hengqu4&#39;s Blog</strong>
-    </a>
-
-    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <div class="animated-icon"><span></span><span></span><span></span></div>
-    </button>
-
-    <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav ml-auto text-center">
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/">
-                <i class="iconfont icon-home-fill"></i>
-                <span>Home</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/archives/">
-                <i class="iconfont icon-archive-fill"></i>
-                <span>Archives</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/categories/">
-                <i class="iconfont icon-category-fill"></i>
-                <span>Categories</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/tags/">
-                <i class="iconfont icon-tags-fill"></i>
-                <span>Tags</span>
-              </a>
-            </li>
-          
-        
-          
-          
-          
-          
-            <li class="nav-item">
-              <a class="nav-link" href="/about/">
-                <i class="iconfont icon-user-fill"></i>
-                <span>About</span>
-              </a>
-            </li>
-          
-        
-        
-          <li class="nav-item" id="search-btn">
-            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
-              <i class="iconfont icon-search"></i>
-            </a>
-          </li>
-          
-        
-        
-          <li class="nav-item" id="color-toggle-btn">
-            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
-              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
-            </a>
-          </li>
-        
-      </ul>
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
     </div>
   </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
 </nav>
 
+
+
+
+</header>
+        
   
+  <aside class="sidebar">
 
-<div id="banner" class="banner" parallax=true
-     style="background: url('/img/default.png') no-repeat center center; background-size: cover;">
-  <div class="full-bg-img">
-    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-      <div class="banner-text text-center fade-in-up">
-        <div class="h2">
-          
-            <span id="subtitle" data-typed-text="Mpx框架搭建一个飞书小程序"></span>
-          
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Mpx-cli%E5%88%9D%E5%A7%8B%E5%8C%96%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">Mpx-cli初始化项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%89%E8%A3%85Mpx%E8%84%9A%E6%89%8B%E6%9E%B6"><span class="nav-number">1.1.</span> <span class="nav-text">安装Mpx脚手架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%AF%91%E6%9E%84%E5%BB%BA"><span class="nav-number">1.2.</span> <span class="nav-text">编译构建</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%85%A5%E9%A3%9E%E4%B9%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F%E9%85%8D%E7%BD%AE"><span class="nav-number">2.</span> <span class="nav-text">导入飞书小程序配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#project-config-json"><span class="nav-number">2.1.</span> <span class="nav-text">project.config.json</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#vue-config-js"><span class="nav-number">2.2.</span> <span class="nav-text">vue.config.js</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#package-json"><span class="nav-number">2.3.</span> <span class="nav-text">package.json</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E4%B8%80%E4%B8%AA%E6%96%B0%E9%A1%B5%E9%9D%A2"><span class="nav-number">3.</span> <span class="nav-text">开发一个新页面</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2index-mpx"><span class="nav-number">3.1.</span> <span class="nav-text">页面index.mpx</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#app-mpx-%E9%85%8D%E7%BD%AE%E8%B7%AF%E7%94%B1"><span class="nav-number">3.2.</span> <span class="nav-text">app.mpx 配置路由</span></a></li></ol></li></ol></div>
         </div>
+        <!--/noindex-->
 
-        
-          
-  <div class="mt-3">
-    
-    
-      <span class="post-meta">
-        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-07-11 16:43" pubdate>
-          July 11, 2023 pm
-        </time>
-      </span>
-    
-  </div>
-
-  <div class="mt-1">
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-chart"></i>
-        
-          6.6k words
-        
-      </span>
-    
-
-    
-      <span class="post-meta mr-2">
-        <i class="iconfont icon-clock-fill"></i>
-        
-        
-        
-          56 mins
-        
-      </span>
-    
-
-    
-    
-  </div>
-
-
-        
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">10</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
       </div>
-
-      
-    </div>
-  </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
 </div>
-
-</div>
-
-  </header>
-
-  <main>
-    
-      
-
-<div class="container-fluid nopadding-x">
-  <div class="row nomargin-x">
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-
-    </div>
-
-    <div class="col-lg-8 nopadding-x-md">
-      <div class="container nopadding-x-md" id="board-ctn">
-        <div id="board">
-          <article class="post-content mx-auto">
-            <h1 id="seo-header">Mpx框架搭建一个飞书小程序</h1>
-            
-            
-              <div class="markdown-body">
-                
-                <h1 id="Mpx框架搭建一个飞书小程序"><a href="#Mpx框架搭建一个飞书小程序" class="headerlink" title="Mpx框架搭建一个飞书小程序"></a>Mpx框架搭建一个飞书小程序</h1><h2 id="Mpx-cli初始化项目"><a href="#Mpx-cli初始化项目" class="headerlink" title="Mpx-cli初始化项目"></a>Mpx-cli初始化项目</h2><h3 id="安装Mpx脚手架"><a href="#安装Mpx脚手架" class="headerlink" title="安装Mpx脚手架"></a>安装Mpx脚手架</h3><blockquote>
-<p>Mpx官网：<a target="_blank" rel="noopener" href="https://mpxjs.cn/guide/basic/start.html">https://mpxjs.cn/guide/basic/start.html</a>  </p>
-</blockquote>
-<p>全局安装:</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm i -g @mpxjs/cli<br>mpx create mpx-project-name<br></code></pre></td></tr></table></figure>
-<p>也可以在不全局安装脚手架情况下创建项目:  </p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npx @mpxjs/cli create mpx-project-name<br></code></pre></td></tr></table></figure>
-<p>执行命令后会弹出一系列问题进行项目初始配置，根据自身需求进行选择，完成后进入项目目录进行依赖安装。  </p>
-<p>安装成功后进入目录并执行：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd mpx-project-name<br>npm install<br></code></pre></td></tr></table></figure>
-<h3 id="编译构建"><a href="#编译构建" class="headerlink" title="编译构建"></a>编译构建</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">npm run serve<br></code></pre></td></tr></table></figure>
-
-<h2 id="导入飞书小程序配置"><a href="#导入飞书小程序配置" class="headerlink" title="导入飞书小程序配置"></a>导入飞书小程序配置</h2><h3 id="project-config-json"><a href="#project-config-json" class="headerlink" title="project.config.json"></a>project.config.json</h3><p>在<code>static</code>文件夹下新建一个文件夹，命名为<code>tt</code><br>在<code>tt</code>文件夹新建一个文件<code>project.config.json</code><br><img src="/2023/07/11/applet-mpx/tt_json.jpeg" srcset="/img/loading.gif" lazyload alt="page-img1" title="新建文件project.config.json"></p>
-<p>文件写入，<code>appid</code>和<code>projectname</code>根据自己的项目修改，<code>appid</code>为申请的飞书小程序的appid。 </p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;setting&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;urlCheck&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;es6&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;minified&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;newFeature&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;babelSetting&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>      <span class="hljs-attr">&quot;ignore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;disablePlugins&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>      <span class="hljs-attr">&quot;outputPath&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;&quot;</span><br>    <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;condition&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;appid&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;cli_a111110000011111&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;projectname&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;applet-name&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;compileType&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;miniprogram&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;libVersion&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2.32.2&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;packOptions&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;ignore&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;include&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><span class="hljs-punctuation">]</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;condition&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;editorSetting&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;tabIndent&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;insertSpaces&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;tabSize&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-number">2</span><br>  <span class="hljs-punctuation">&#125;</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
-<h3 id="vue-config-js"><a href="#vue-config-js" class="headerlink" title="vue.config.js"></a>vue.config.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs js"><span class="hljs-keyword">const</span> &#123; defineConfig &#125; = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;@vue/cli-service&quot;</span>);<br><span class="hljs-variable language_">module</span>.<span class="hljs-property">exports</span> = <span class="hljs-title function_">defineConfig</span>(&#123;<br>  <span class="hljs-attr">pluginOptions</span>: &#123;<br>    <span class="hljs-attr">mpx</span>: &#123;<br>      <span class="hljs-comment">// 这里不要改为&#x27;tt&#x27;</span><br>      <span class="hljs-comment">// 去改package.json的 serve/build 命令</span><br>      <span class="hljs-comment">// 为了方便后续引入vant weapp组件库</span><br>      <span class="hljs-attr">srcMode</span>: <span class="hljs-string">&quot;wx&quot;</span>,<br>      <span class="hljs-attr">plugin</span>: &#123;<br>        <span class="hljs-attr">hackResolveBuildDependencies</span>: <span class="hljs-function">(<span class="hljs-params">&#123; files, resolveDependencies &#125;</span>) =&gt;</span> &#123;<br>          <span class="hljs-keyword">const</span> path = <span class="hljs-built_in">require</span>(<span class="hljs-string">&quot;path&quot;</span>);<br>          <span class="hljs-keyword">const</span> packageJSONPath = path.<span class="hljs-title function_">resolve</span>(<span class="hljs-string">&quot;package.json&quot;</span>);<br>          <span class="hljs-keyword">if</span> (files.<span class="hljs-title function_">has</span>(packageJSONPath)) files.<span class="hljs-title function_">delete</span>(packageJSONPath);<br>          <span class="hljs-keyword">if</span> (resolveDependencies.<span class="hljs-property">files</span>.<span class="hljs-title function_">has</span>(packageJSONPath)) &#123;<br>            resolveDependencies.<span class="hljs-property">files</span>.<span class="hljs-title function_">delete</span>(packageJSONPath);<br>          &#125;<br>        &#125;,<br>      &#125;,<br>      <span class="hljs-attr">loader</span>: &#123;&#125;,<br>    &#125;,<br>  &#125;,<br>  <span class="hljs-comment">/**</span><br><span class="hljs-comment">   * 如果希望node_modules下的文件时对应的缓存可以失效，</span><br><span class="hljs-comment">   * 可以将configureWebpack.snap.managedPaths修改为 []</span><br><span class="hljs-comment">   */</span><br>  <span class="hljs-title function_">configureWebpack</span>(<span class="hljs-params">config</span>) &#123;&#125;,<br>&#125;);<br></code></pre></td></tr></table></figure>
-
-<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>文件<code>package.json</code>中，在<code>serve</code>和<code>build</code>的结尾都加上<code> --tt</code><br><img src="/2023/07/11/applet-mpx/serve-tt.jpeg" srcset="/img/loading.gif" lazyload alt="page-img1" title="结尾都加上` --tt`">  </p>
-<p><strong>package.json</strong></p>
-<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><code class="hljs json"><span class="hljs-punctuation">&#123;</span><br>  <span class="hljs-attr">&quot;name&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mpx-project&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;version&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;0.1.0&quot;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;private&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;scripts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;serve&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mpx-cli-service serve --tt&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;build&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;mpx-cli-service build --tt&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;lint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;eslint --ext .js,.ts,.mpx src/&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;dependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@mpxjs/api-proxy&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/core&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/fetch&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/pinia&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/store&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/utils&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@vant/weapp&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.10.19&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;pinia&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.14&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.6.14&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue-demi&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.13.11&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue-i18n&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^8.27.2&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue-i18n-bridge&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^9.2.2&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue-router&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^3.1.3&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;devDependencies&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">&#123;</span><br>    <span class="hljs-attr">&quot;@babel/core&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^7.10.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@babel/plugin-transform-runtime&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^7.10.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@babel/preset-env&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^7.10.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@babel/runtime-corejs3&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^7.10.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/babel-plugin-inject-page-events&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/eslint-config-ts&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.0.5&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/mpx-cli-service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/size-report&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/vue-cli-plugin-mpx&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/vue-cli-plugin-mpx-eslint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/vue-cli-plugin-mpx-typescript&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@mpxjs/webpack-plugin&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.8.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;@vue/cli-service&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;~5.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;autoprefixer&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^10.2.4&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;eslint&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^7.0.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;postcss&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^8.2.6&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sass&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^1.63.6&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;sass-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^13.3.2&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;stylus&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^0.55.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;stylus-loader&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^6.1.0&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;typescript&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^4.1.3&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;vue-template-compiler&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^2.6.14&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-attr">&quot;webpack&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;^5.43.0&quot;</span><br>  <span class="hljs-punctuation">&#125;</span><span class="hljs-punctuation">,</span><br>  <span class="hljs-attr">&quot;browserslist&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">[</span><br>    <span class="hljs-string">&quot;ios &gt;= 8&quot;</span><span class="hljs-punctuation">,</span><br>    <span class="hljs-string">&quot;chrome &gt;= 47&quot;</span><br>  <span class="hljs-punctuation">]</span><br><span class="hljs-punctuation">&#125;</span><br></code></pre></td></tr></table></figure>
-<p>运行输入</p>
-<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs routeros">npm <span class="hljs-built_in">run</span> serve<br></code></pre></td></tr></table></figure>
-<p>成功后出现<code>dist</code>文件夹，在飞书开发者工具中打开<code>dist/tt</code>。<br><img src="/2023/07/11/applet-mpx/dist_tt.jpeg" srcset="/img/loading.gif" lazyload alt="page-img2" title="打包好的tt小程序文件包"></p>
-<p>打开飞书开发者工具，选择<code>Gadget</code>-&gt;选择<code>Import project</code>-&gt;选择该项目打包好的tt文件夹-&gt;确认打开文件夹。  </p>
-<p><img src="/2023/07/11/applet-mpx/open_dist.jpeg" srcset="/img/loading.gif" lazyload alt="page-img3" title="在飞书开发者工具中导入项目/dist/tt"></p>
-<p>成功打开<br><img src="/2023/07/11/applet-mpx/open_ok.jpeg" srcset="/img/loading.gif" lazyload alt="page-img4" title="成功打开"></p>
-<p>回到Vscode中继续开发项目，小程序会自动更新代码变动。</p>
-<h2 id="开发一个新页面"><a href="#开发一个新页面" class="headerlink" title="开发一个新页面"></a>开发一个新页面</h2><h3 id="页面index-mpx"><a href="#页面index-mpx" class="headerlink" title="页面index.mpx"></a>页面index.mpx</h3><p>开发一个新页面<code>/pages/home/index</code><br>在<code>pages/</code>新建文件夹命名为<code>home</code>，在<code>home</code>下新建文件<code>index.mpx</code>。  </p>
-<p><strong>src&#x2F;pages&#x2F;home&#x2F;index.mpx</strong> </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">template</span>&gt;</span><br>  <span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home-page&quot;</span>&gt;</span><br>    <span class="hljs-tag">&lt;<span class="hljs-name">view</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;home-button&quot;</span> <span class="hljs-attr">bindtap</span>=<span class="hljs-string">&quot;goTo&quot;</span>&gt;</span>点击跳转<span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br>  <span class="hljs-tag">&lt;/<span class="hljs-name">view</span>&gt;</span><br><span class="hljs-tag">&lt;/<span class="hljs-name">template</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-keyword">import</span> mpx, &#123; createPage &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mpxjs/core&#x27;</span></span><br><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-title function_">createPage</span>(&#123;</span><br><span class="language-javascript">    <span class="hljs-title function_">onLoad</span>(<span class="hljs-params"></span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-comment">//</span></span><br><span class="language-javascript">    &#125;,</span><br><span class="language-javascript">    <span class="hljs-attr">methods</span>: &#123;</span><br><span class="language-javascript">      <span class="hljs-title function_">goTo</span>(<span class="hljs-params"></span>) &#123;</span><br><span class="language-javascript">        <span class="hljs-variable language_">console</span>.<span class="hljs-title function_">log</span>(<span class="hljs-string">&#x27;goTo&#x27;</span>)</span><br><span class="language-javascript">        mpx.<span class="hljs-title function_">switchTab</span>(&#123; <span class="hljs-attr">url</span>: <span class="hljs-string">&#x27;/pages/device/index&#x27;</span> &#125;)</span><br><span class="language-javascript">      &#125;</span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript">  &#125;)</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;application/json&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">  &#123;</span><br><span class="language-javascript">    <span class="hljs-string">&quot;usingComponents&quot;</span>: &#123;&#125;</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;scss&quot;</span>&gt;</span><span class="language-css"></span><br><span class="language-css">  <span class="hljs-selector-class">.home-page</span> &#123;</span><br><span class="language-css">    <span class="hljs-attribute">text-align</span>: center;</span><br><span class="language-css">  &#125;</span><br><span class="language-css">  <span class="hljs-selector-class">.home-button</span> &#123;</span><br><span class="language-css">    // <span class="hljs-attr">--color-primary</span> 为 app<span class="hljs-selector-class">.mpx</span> 中的全局样式</span><br><span class="language-css">    <span class="hljs-attribute">border</span>: <span class="hljs-number">0.1rem</span> solid <span class="hljs-built_in">var</span>(--color-primary);</span><br><span class="language-css">    <span class="hljs-attribute">margin</span>: <span class="hljs-number">20%</span>;</span><br><span class="language-css">    <span class="hljs-attribute">padding</span>: <span class="hljs-number">1.2rem</span>;</span><br><span class="language-css">    <span class="hljs-attribute">border-radius</span>: <span class="hljs-number">1rem</span>;</span><br><span class="language-css">  &#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br></code></pre></td></tr></table></figure>
-<h3 id="app-mpx-配置路由"><a href="#app-mpx-配置路由" class="headerlink" title="app.mpx 配置路由"></a>app.mpx 配置路由</h3><p>在<code>app.mpx</code>给这个新页面配置路由。<br><code>app.mpx</code>中，还可以配置底部tabbar、全局样式等。  </p>
-<p><strong>app.mpx</strong>  </p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><code class="hljs html"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-keyword">import</span> mpx, &#123; createApp &#125; <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mpxjs/core&#x27;</span></span><br><span class="language-javascript">  <span class="hljs-keyword">import</span> apiProxy <span class="hljs-keyword">from</span> <span class="hljs-string">&#x27;@mpxjs/api-proxy&#x27;</span></span><br><span class="language-javascript"></span><br><span class="language-javascript">  mpx.<span class="hljs-title function_">use</span>(apiProxy, &#123; <span class="hljs-attr">usePromise</span>: <span class="hljs-literal">true</span> &#125;)</span><br><span class="language-javascript"></span><br><span class="language-javascript">  <span class="hljs-title function_">createApp</span>(&#123;</span><br><span class="language-javascript">    <span class="hljs-title function_">onLaunch</span>(<span class="hljs-params"></span>) &#123;</span><br><span class="language-javascript">      <span class="hljs-comment">//</span></span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript">  &#125;)</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">style</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;css&quot;</span>&gt;</span><span class="language-css"></span><br><span class="language-css">  <span class="hljs-comment">/*此处编写全局样式*/</span></span><br><span class="language-css"></span><br><span class="language-css">  <span class="hljs-selector-pseudo">:root</span> &#123;</span><br><span class="language-css">    <span class="hljs-attr">--color-primary</span>: <span class="hljs-number">#d6d6d6</span>;</span><br><span class="language-css">    <span class="hljs-attr">--color-blue</span>: <span class="hljs-number">#2d72ff</span>;</span><br><span class="language-css">  &#125;</span><br><span class="language-css">  <span class="hljs-selector-class">.page-bottom</span> &#123;</span><br><span class="language-css">    <span class="hljs-attribute">margin</span>: <span class="hljs-number">20px</span>;</span><br><span class="language-css">    <span class="hljs-attribute">text-align</span>: center;</span><br><span class="language-css">    <span class="hljs-attribute">position</span>: absolute;</span><br><span class="language-css">    <span class="hljs-attribute">bottom</span>: <span class="hljs-number">10px</span>;</span><br><span class="language-css">    <span class="hljs-attribute">width</span>: <span class="hljs-built_in">calc</span>(<span class="hljs-number">100%</span> - <span class="hljs-number">40px</span>);</span><br><span class="language-css">  &#125;</span><br><span class="language-css">  <span class="hljs-selector-class">.flex-space-between</span> &#123;</span><br><span class="language-css">    <span class="hljs-attribute">display</span>: flex;</span><br><span class="language-css">    <span class="hljs-attribute">justify-content</span>: space-between;</span><br><span class="language-css">    <span class="hljs-attribute">width</span>: <span class="hljs-number">100%</span>;</span><br><span class="language-css">  &#125;</span><br><span class="language-css"></span><span class="hljs-tag">&lt;/<span class="hljs-name">style</span>&gt;</span><br><br><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;application/json&quot;</span>&gt;</span><span class="language-javascript"></span><br><span class="language-javascript">  &#123;</span><br><span class="language-javascript">    <span class="hljs-string">&quot;pages&quot;</span>: [</span><br><span class="language-javascript">      <span class="hljs-string">&quot;./pages/home/index&quot;</span>,</span><br><span class="language-javascript">      <span class="hljs-string">&quot;./pages/device/index&quot;</span></span><br><span class="language-javascript">    ],</span><br><span class="language-javascript">    <span class="hljs-string">&quot;tabBar&quot;</span>: &#123;</span><br><span class="language-javascript">      <span class="hljs-string">&quot;list&quot;</span>: [</span><br><span class="language-javascript">        &#123;</span><br><span class="language-javascript">          <span class="hljs-string">&quot;pagePath&quot;</span>: <span class="hljs-string">&quot;pages/home/index&quot;</span>,</span><br><span class="language-javascript">          <span class="hljs-string">&quot;text&quot;</span>: <span class="hljs-string">&quot;首页&quot;</span>,</span><br><span class="language-javascript">          <span class="hljs-string">&quot;iconPath&quot;</span>: <span class="hljs-string">&quot;assets/tab.png&quot;</span>,</span><br><span class="language-javascript">          <span class="hljs-string">&quot;selectedIconPath&quot;</span>: <span class="hljs-string">&quot;assets/tab-selected.png&quot;</span></span><br><span class="language-javascript">        &#125;</span><br><span class="language-javascript">      ]</span><br><span class="language-javascript">    &#125;</span><br><span class="language-javascript">  &#125;</span><br><span class="language-javascript"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span><br><br></code></pre></td></tr></table></figure>
-
-                
-              </div>
-            
-            <hr/>
-            <div>
-              <div class="post-metas my-3">
-  
-    <div class="post-meta mr-3 d-flex align-items-center">
-      <i class="iconfont icon-category"></i>
-      
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E5%89%8D%E7%AB%AF/" class="category-chain-item">前端</a>
-  
-  
-    <span>></span>
-    
-  <a href="/categories/%E5%89%8D%E7%AB%AF/Mpx/" class="category-chain-item">Mpx</a>
-  
-  
-
-  
-
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
-    
-  
-</span>
-
-    </div>
-  
-  
-    <div class="post-meta">
-      <i class="iconfont icon-tags"></i>
-      
-        <a href="/tags/javascript/" class="print-no-link">#javascript</a>
-      
-        <a href="/tags/typescript/" class="print-no-link">#typescript</a>
-      
-        <a href="/tags/Mpx/" class="print-no-link">#Mpx</a>
-      
-        <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="print-no-link">#小程序</a>
-      
-        <a href="/tags/%E9%A3%9E%E4%B9%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F/" class="print-no-link">#飞书小程序</a>
-      
-    </div>
-  
-</div>
-
-
-              
-  
-
-  <div class="license-box my-3">
-    <div class="license-title">
-      <div>Mpx框架搭建一个飞书小程序</div>
-      <div>https://hengqu4.github.io/2023/07/11/applet-mpx/</div>
-    </div>
-    <div class="license-meta">
-      
-        <div class="license-meta-item">
-          <div>Author</div>
-          <div>Hengqu4</div>
-        </div>
-      
-      
-        <div class="license-meta-item license-meta-date">
-          <div>Posted on</div>
-          <div>July 11, 2023</div>
-        </div>
-      
-      
-      
-        <div class="license-meta-item">
-          <div>Licensed under</div>
-          <div>
-            
-              
-              
-                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
-                  <span class="hint--top hint--rounded" aria-label="BY - Attribution">
-                    <i class="iconfont icon-by"></i>
-                  </span>
-                </a>
-              
-            
-          </div>
-        </div>
-      
-    </div>
-    <div class="license-icon iconfont"></div>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
   </div>
 
-
-
-              
-                <div class="post-prevnext my-3">
-                  <article class="post-prev col-6">
-                    
-                    
-                      <a href="/2023/07/11/applet-mpx-vant/" title="Mpx框架开发飞书小程序，引入VantWeapp组件库">
-                        <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Mpx框架开发飞书小程序，引入VantWeapp组件库</span>
-                        <span class="visible-mobile">Previous</span>
-                      </a>
-                    
-                  </article>
-                  <article class="post-next col-6">
-                    
-                    
-                      <a href="/2023/07/10/vue2-fix-header/" title="Vue2顶部固定且高度可变，如何让页面内容自适应高度">
-                        <span class="hidden-mobile">Vue2顶部固定且高度可变，如何让页面内容自适应高度</span>
-                        <span class="visible-mobile">Next</span>
-                        <i class="iconfont icon-arrowright"></i>
-                      </a>
-                    
-                  </article>
-                </div>
-              
-            </div>
-
-            
-          </article>
         </div>
       </div>
     </div>
 
-    <div class="side-col d-none d-lg-block col-lg-2">
-      
-  <aside class="sidebar" style="margin-left: -1rem">
-    <div id="toc">
-  <p class="toc-header">
-    <i class="iconfont icon-list"></i>
-    <span>Table of Contents</span>
-  </p>
-  <div class="toc-body" id="toc-body"></div>
-</div>
-
-
-
+    
   </aside>
 
 
     </div>
-  </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/11/applet-mpx/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Mpx框架搭建一个飞书小程序 | Hengqu4">
+      <meta itemprop="description" content="1.Mpx-cli初始化项目，2.导入飞书小程序配置，3.用mpx开发新页面以及配置相应的路由">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Mpx框架搭建一个飞书小程序
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-11 16:43:45" itemprop="dateCreated datePublished" datetime="2023-07-11T16:43:45+08:00">2023-07-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-19 18:49:45" itemprop="dateModified" datetime="2023-07-19T18:49:45+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/Mpx/" itemprop="url" rel="index"><span itemprop="name">Mpx</span></a>
+        </span>
+    </span>
+
+  
 </div>
 
-
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-    
-
-    
-      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
-        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
-      </a>
-    
-
-    
-      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
-     aria-hidden="true">
-  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header text-center">
-        <h4 class="modal-title w-100 font-weight-bold">Search</h4>
-        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body mx-3">
-        <div class="md-form mb-5">
-          <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v" for="local-search-input">Keyword</label>
+            <div class="post-description">1.Mpx-cli初始化项目，2.导入飞书小程序配置，3.用mpx开发新页面以及配置相应的路由</div>
         </div>
-        <div class="list-group" id="local-search-result"></div>
-      </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><!-- # Mpx框架搭建一个飞书小程序 -->
+<h2 id="Mpx-cli初始化项目"><a href="#Mpx-cli初始化项目" class="headerlink" title="Mpx-cli初始化项目"></a>Mpx-cli初始化项目</h2><h3 id="安装Mpx脚手架"><a href="#安装Mpx脚手架" class="headerlink" title="安装Mpx脚手架"></a>安装Mpx脚手架</h3><blockquote>
+<p>Mpx官网：<a target="_blank" rel="noopener" href="https://mpxjs.cn/guide/basic/start.html">https://mpxjs.cn/guide/basic/start.html</a>  </p>
+</blockquote>
+<p>全局安装:</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm i -g @mpxjs/cli</span><br><span class="line">mpx create mpx-project-name</span><br></pre></td></tr></table></figure>
+<p>也可以在不全局安装脚手架情况下创建项目:  </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npx @mpxjs/cli create mpx-project-name</span><br></pre></td></tr></table></figure>
+<p>执行命令后会弹出一系列问题进行项目初始配置，根据自身需求进行选择，完成后进入项目目录进行依赖安装。  </p>
+<p>安装成功后进入目录并执行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd mpx-project-name</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<h3 id="编译构建"><a href="#编译构建" class="headerlink" title="编译构建"></a>编译构建</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run serve</span><br></pre></td></tr></table></figure>
+
+<h2 id="导入飞书小程序配置"><a href="#导入飞书小程序配置" class="headerlink" title="导入飞书小程序配置"></a>导入飞书小程序配置</h2><h3 id="project-config-json"><a href="#project-config-json" class="headerlink" title="project.config.json"></a>project.config.json</h3><p>在<code>static</code>文件夹下新建一个文件夹，命名为<code>tt</code><br>在<code>tt</code>文件夹新建一个文件<code>project.config.json</code><br><img src="/2023/07/11/applet-mpx/tt_json.jpeg" alt="page-img1" title="新建文件project.config.json"></p>
+<p>文件写入，<code>appid</code>和<code>projectname</code>根据自己的项目修改，<code>appid</code>为申请的飞书小程序的appid。 </p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;setting&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;urlCheck&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;es6&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;postcss&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;minified&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;newFeature&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;babelSetting&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">      <span class="attr">&quot;ignore&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;disablePlugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">      <span class="attr">&quot;outputPath&quot;</span><span class="punctuation">:</span> <span class="string">&quot;&quot;</span></span><br><span class="line">    <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;condition&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;appid&quot;</span><span class="punctuation">:</span> <span class="string">&quot;cli_a111110000011111&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;projectname&quot;</span><span class="punctuation">:</span> <span class="string">&quot;applet-name&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;compileType&quot;</span><span class="punctuation">:</span> <span class="string">&quot;miniprogram&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;libVersion&quot;</span><span class="punctuation">:</span> <span class="string">&quot;2.32.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;packOptions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;ignore&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;include&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span><span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;condition&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span><span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;editorSetting&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;tabIndent&quot;</span><span class="punctuation">:</span> <span class="string">&quot;insertSpaces&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tabSize&quot;</span><span class="punctuation">:</span> <span class="number">2</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="vue-config-js"><a href="#vue-config-js" class="headerlink" title="vue.config.js"></a>vue.config.js</h3><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; defineConfig &#125; = <span class="built_in">require</span>(<span class="string">&quot;@vue/cli-service&quot;</span>);</span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">pluginOptions</span>: &#123;</span><br><span class="line">    <span class="attr">mpx</span>: &#123;</span><br><span class="line">      <span class="comment">// 这里不要改为&#x27;tt&#x27;</span></span><br><span class="line">      <span class="comment">// 去改package.json的 serve/build 命令</span></span><br><span class="line">      <span class="comment">// 为了方便后续引入vant weapp组件库</span></span><br><span class="line">      <span class="attr">srcMode</span>: <span class="string">&quot;wx&quot;</span>,</span><br><span class="line">      <span class="attr">plugin</span>: &#123;</span><br><span class="line">        <span class="attr">hackResolveBuildDependencies</span>: <span class="function">(<span class="params">&#123; files, resolveDependencies &#125;</span>) =&gt;</span> &#123;</span><br><span class="line">          <span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&quot;path&quot;</span>);</span><br><span class="line">          <span class="keyword">const</span> packageJSONPath = path.<span class="title function_">resolve</span>(<span class="string">&quot;package.json&quot;</span>);</span><br><span class="line">          <span class="keyword">if</span> (files.<span class="title function_">has</span>(packageJSONPath)) files.<span class="title function_">delete</span>(packageJSONPath);</span><br><span class="line">          <span class="keyword">if</span> (resolveDependencies.<span class="property">files</span>.<span class="title function_">has</span>(packageJSONPath)) &#123;</span><br><span class="line">            resolveDependencies.<span class="property">files</span>.<span class="title function_">delete</span>(packageJSONPath);</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;,</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="attr">loader</span>: &#123;&#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 如果希望node_modules下的文件时对应的缓存可以失效，</span></span><br><span class="line"><span class="comment">   * 可以将configureWebpack.snap.managedPaths修改为 []</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  <span class="title function_">configureWebpack</span>(<span class="params">config</span>) &#123;&#125;,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<h3 id="package-json"><a href="#package-json" class="headerlink" title="package.json"></a>package.json</h3><p>文件<code>package.json</code>中，在<code>serve</code>和<code>build</code>的结尾都加上<code> --tt</code><br><img src="/2023/07/11/applet-mpx/serve-tt.jpeg" alt="page-img1" title="结尾都加上` --tt`">  </p>
+<p><strong>package.json</strong></p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;mpx-project&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.1.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;private&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;serve&quot;</span><span class="punctuation">:</span> <span class="string">&quot;mpx-cli-service serve --tt&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;mpx-cli-service build --tt&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;lint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;eslint --ext .js,.ts,.mpx src/&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/api-proxy&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/core&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/fetch&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/pinia&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/store&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/utils&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vant/weapp&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^1.10.19&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;pinia&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.14&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.6.14&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-demi&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^0.13.11&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-i18n&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^8.27.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-i18n-bridge&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^9.2.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-router&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.1.3&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@babel/core&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^7.10.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@babel/plugin-transform-runtime&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^7.10.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@babel/preset-env&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^7.10.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@babel/runtime-corejs3&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^7.10.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/babel-plugin-inject-page-events&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/eslint-config-ts&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^1.0.5&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/mpx-cli-service&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/size-report&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/vue-cli-plugin-mpx&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/vue-cli-plugin-mpx-eslint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/vue-cli-plugin-mpx-typescript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@mpxjs/webpack-plugin&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vue/cli-service&quot;</span><span class="punctuation">:</span> <span class="string">&quot;~5.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;autoprefixer&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^10.2.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;eslint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^7.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;postcss&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^8.2.6&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sass&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^1.63.6&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;sass-loader&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^13.3.2&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;stylus&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^0.55.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;stylus-loader&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^6.1.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;typescript&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^4.1.3&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-template-compiler&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.6.14&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;webpack&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^5.43.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;browserslist&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;ios &gt;= 8&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="string">&quot;chrome &gt;= 47&quot;</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p>运行输入</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm run serve</span><br></pre></td></tr></table></figure>
+<p>成功后出现<code>dist</code>文件夹，在飞书开发者工具中打开<code>dist/tt</code>。<br><img src="/2023/07/11/applet-mpx/dist_tt.jpeg" alt="page-img2" title="打包好的tt小程序文件包"></p>
+<p>打开飞书开发者工具，选择<code>Gadget</code>-&gt;选择<code>Import project</code>-&gt;选择该项目打包好的tt文件夹-&gt;确认打开文件夹。  </p>
+<p><img src="/2023/07/11/applet-mpx/open_dist.jpeg" alt="page-img3" title="在飞书开发者工具中导入项目/dist/tt"></p>
+<p>成功打开<br><img src="/2023/07/11/applet-mpx/open_ok.jpeg" alt="page-img4" title="成功打开"></p>
+<p>回到Vscode中继续开发项目，小程序会自动更新代码变动。</p>
+<h2 id="开发一个新页面"><a href="#开发一个新页面" class="headerlink" title="开发一个新页面"></a>开发一个新页面</h2><h3 id="页面index-mpx"><a href="#页面index-mpx" class="headerlink" title="页面index.mpx"></a>页面index.mpx</h3><p>开发一个新页面<code>/pages/home/index</code><br>在<code>pages/</code>新建文件夹命名为<code>home</code>，在<code>home</code>下新建文件<code>index.mpx</code>。  </p>
+<p><strong>src&#x2F;pages&#x2F;home&#x2F;index.mpx</strong> </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;home-page&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">view</span> <span class="attr">class</span>=<span class="string">&quot;home-button&quot;</span> <span class="attr">bindtap</span>=<span class="string">&quot;goTo&quot;</span>&gt;</span>点击跳转<span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">view</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> mpx, &#123; createPage &#125; <span class="keyword">from</span> <span class="string">&#x27;@mpxjs/core&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">createPage</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">onLoad</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//</span></span></span><br><span class="line"><span class="language-javascript">    &#125;,</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">goTo</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">        <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;goTo&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">        mpx.<span class="title function_">switchTab</span>(&#123; <span class="attr">url</span>: <span class="string">&#x27;/pages/device/index&#x27;</span> &#125;)</span></span><br><span class="line"><span class="language-javascript">      &#125;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;application/json&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="string">&quot;usingComponents&quot;</span>: &#123;&#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.home-page</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.home-button</span> &#123;</span></span><br><span class="line"><span class="language-css">    // <span class="attr">--color-primary</span> 为 app<span class="selector-class">.mpx</span> 中的全局样式</span></span><br><span class="line"><span class="language-css">    <span class="attribute">border</span>: <span class="number">0.1rem</span> solid <span class="built_in">var</span>(--color-primary);</span></span><br><span class="line"><span class="language-css">    <span class="attribute">margin</span>: <span class="number">20%</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">padding</span>: <span class="number">1.2rem</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">border-radius</span>: <span class="number">1rem</span>;</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="app-mpx-配置路由"><a href="#app-mpx-配置路由" class="headerlink" title="app.mpx 配置路由"></a>app.mpx 配置路由</h3><p>在<code>app.mpx</code>给这个新页面配置路由。<br><code>app.mpx</code>中，还可以配置底部tabbar、全局样式等。  </p>
+<p><strong>app.mpx</strong>  </p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> mpx, &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;@mpxjs/core&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">import</span> apiProxy <span class="keyword">from</span> <span class="string">&#x27;@mpxjs/api-proxy&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  mpx.<span class="title function_">use</span>(apiProxy, &#123; <span class="attr">usePromise</span>: <span class="literal">true</span> &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">createApp</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">onLaunch</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="comment">//</span></span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;css&quot;</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">  <span class="comment">/*此处编写全局样式*/</span></span></span><br><span class="line"><span class="language-css"></span></span><br><span class="line"><span class="language-css">  <span class="selector-pseudo">:root</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attr">--color-primary</span>: <span class="number">#d6d6d6</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attr">--color-blue</span>: <span class="number">#2d72ff</span>;</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.page-bottom</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">margin</span>: <span class="number">20px</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">text-align</span>: center;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">position</span>: absolute;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">bottom</span>: <span class="number">10px</span>;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">width</span>: <span class="built_in">calc</span>(<span class="number">100%</span> - <span class="number">40px</span>);</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css">  <span class="selector-class">.flex-space-between</span> &#123;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">display</span>: flex;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">justify-content</span>: space-between;</span></span><br><span class="line"><span class="language-css">    <span class="attribute">width</span>: <span class="number">100%</span>;</span></span><br><span class="line"><span class="language-css">  &#125;</span></span><br><span class="line"><span class="language-css"></span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;application/json&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="string">&quot;pages&quot;</span>: [</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;./pages/home/index&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;./pages/device/index&quot;</span></span></span><br><span class="line"><span class="language-javascript">    ],</span></span><br><span class="line"><span class="language-javascript">    <span class="string">&quot;tabBar&quot;</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="string">&quot;list&quot;</span>: [</span></span><br><span class="line"><span class="language-javascript">        &#123;</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;pagePath&quot;</span>: <span class="string">&quot;pages/home/index&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;text&quot;</span>: <span class="string">&quot;首页&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;iconPath&quot;</span>: <span class="string">&quot;assets/tab.png&quot;</span>,</span></span><br><span class="line"><span class="language-javascript">          <span class="string">&quot;selectedIconPath&quot;</span>: <span class="string">&quot;assets/tab-selected.png&quot;</span></span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">      ]</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
     </div>
-  </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/07/11/applet-mpx/" title="Mpx框架搭建一个飞书小程序">https://hengqu4.github.io/2023/07/11/applet-mpx/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
 </div>
 
-    
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/typescript/" rel="tag"># typescript</a>
+              <a href="/tags/Mpx/" rel="tag"># Mpx</a>
+              <a href="/tags/%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 小程序</a>
+              <a href="/tags/%E9%A3%9E%E4%B9%A6%E5%B0%8F%E7%A8%8B%E5%BA%8F/" rel="tag"># 飞书小程序</a>
+          </div>
 
-    
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/10/vue2-fix-header/" rel="prev" title="Vue2顶部固定且高度可变，如何让页面内容自适应高度">
+                  <i class="fa fa-chevron-left"></i> Vue2顶部固定且高度可变，如何让页面内容自适应高度
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/11/applet-mpx-vant/" rel="next" title="Mpx框架开发飞书小程序，引入VantWeapp组件库">
+                  Mpx框架开发飞书小程序，引入VantWeapp组件库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
   </main>
 
-  <footer>
+  <footer class="footer">
     <div class="footer-inner">
-  
-    <div class="footer-content">
-       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
-    </div>
-  
-  
-  
-  
-</div>
 
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
   </footer>
 
-  <!-- Scripts -->
   
-  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
 
-  <script>
-    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
-    NProgress.start()
-    window.addEventListener('load', function() {
-      NProgress.done();
-    })
-  </script>
-
-
-<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
-<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
-<script  src="/js/events.js" ></script>
-<script  src="/js/plugins.js" ></script>
-
-
-  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var subtitle = document.getElementById('subtitle');
-      if (!subtitle || !typing) {
-        return;
-      }
-      var text = subtitle.getAttribute('data-typed-text');
-      
-        typing(text);
-      
-    })(window, document);
-  </script>
-
-
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
 
 
   
-    <script  src="/js/img-lazyload.js" ></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
   
 
 
 
 
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
-    var toc = jQuery('#toc');
-    if (toc.length === 0 || !window.tocbot) { return; }
-    var boardCtn = jQuery('#board-ctn');
-    var boardTop = boardCtn.offset().top;
-
-    window.tocbot.init(Object.assign({
-      tocSelector     : '#toc-body',
-      contentSelector : '.markdown-body',
-      linkClass       : 'tocbot-link',
-      activeLinkClass : 'tocbot-active-link',
-      listClass       : 'tocbot-list',
-      isCollapsedClass: 'tocbot-is-collapsed',
-      collapsibleClass: 'tocbot-is-collapsible',
-      scrollSmooth    : true,
-      includeTitleTags: true,
-      headingsOffset  : -boardTop,
-    }, CONFIG.toc));
-    if (toc.find('.toc-list-item').length > 0) {
-      toc.css('visibility', 'visible');
-    }
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('tocbot' in window) {
-        tocbot.refresh();
-        var toc = jQuery('#toc');
-        if (toc.length === 0 || !tocbot) {
-          return;
-        }
-        if (toc.find('.toc-list-item').length > 0) {
-          toc.css('visibility', 'visible');
-        }
-      }
-    });
-  });
-</script>
-
-
-  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
-
-  <script>Fluid.plugins.codeWidget();</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
-    window.anchors.options = {
-      placement: CONFIG.anchorjs.placement,
-      visible  : CONFIG.anchorjs.visible
-    };
-    if (CONFIG.anchorjs.icon) {
-      window.anchors.options.icon = CONFIG.anchorjs.icon;
-    }
-    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-    var res = [];
-    for (var item of el) {
-      res.push('.markdown-body > ' + item.trim());
-    }
-    if (CONFIG.anchorjs.placement === 'left') {
-      window.anchors.options.class = 'anchorjs-link-left';
-    }
-    window.anchors.add(res.join(', '));
-
-    Fluid.events.registerRefreshCallback(function() {
-      if ('anchors' in window) {
-        anchors.removeAll();
-        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
-        var res = [];
-        for (var item of el) {
-          res.push('.markdown-body > ' + item.trim());
-        }
-        if (CONFIG.anchorjs.placement === 'left') {
-          anchors.options.class = 'anchorjs-link-left';
-        }
-        anchors.add(res.join(', '));
-      }
-    });
-  });
-</script>
-
-
-  
-<script>
-  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
-    Fluid.plugins.fancyBox();
-  });
-</script>
-
-
-  <script>Fluid.plugins.imageCaption();</script>
-
-  <script  src="/js/local-search.js" ></script>
-
-
-
-
-
-<!-- 主题的启动项，将它保持在最底部 -->
-<!-- the boot of the theme, keep it at the bottom -->
-<script  src="/js/boot.js" ></script>
 
 
   
 
-  <noscript>
-    <div class="noscript-warning">Blog works best with JavaScript enabled</div>
-  </noscript>
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":10,"vOffset":50},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
