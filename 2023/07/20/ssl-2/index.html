@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="本文介绍了以下内容：  HTTPS双向认证的过程。 笔者所要解决的问题场景以及进行的前期准备(申请客户端证书)。 前端携带证书发请求的几种方案，以及方案的代码样例和优缺点等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于SSL&#x2F;TSL证书实现HTTPS双向认证2-实践方案">
+<meta property="og:url" content="https://hengqu4.github.io/2023/07/20/ssl-2/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:description" content="本文介绍了以下内容：  HTTPS双向认证的过程。 笔者所要解决的问题场景以及进行的前期准备(申请客户端证书)。 前端携带证书发请求的几种方案，以及方案的代码样例和优缺点等。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-20T14:24:59.000Z">
+<meta property="article:modified_time" content="2023-07-20T11:43:52.740Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="计算机网络">
+<meta property="article:tag" content="SSL">
+<meta property="article:tag" content="HTTPS">
+<meta property="article:tag" content="双向认证">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/07/20/ssl-2/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/07/20/ssl-2/","path":"2023/07/20/ssl-2/","title":"基于SSL/TSL证书实现HTTPS双向认证2-实践方案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>基于SSL/TSL证书实现HTTPS双向认证2-实践方案 | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">双向认证介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%97%AE%E9%A2%98%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0"><span class="nav-number">2.</span> <span class="nav-text">问题场景描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%B3%E8%AF%B7%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6"><span class="nav-number">3.</span> <span class="nav-text">申请客户端证书</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E6%90%BA%E5%B8%A6%E8%AF%81%E4%B9%A6%E5%8F%91%E8%AF%B7%E6%B1%82"><span class="nav-number">4.</span> <span class="nav-text">前端携带证书发请求</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%81%E4%B9%A6%E6%94%BE%E5%88%B0%E8%AF%B7%E6%B1%82%E5%A4%B4"><span class="nav-number">4.1.</span> <span class="nav-text">证书放到请求头</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%AE%A2%E6%88%B7%E7%AB%AF%E8%AF%81%E4%B9%A6%E5%AD%98%E5%82%A8%E6%9C%BA%E5%88%B6"><span class="nav-number">4.2.</span> <span class="nav-text">浏览器客户端证书存储机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E8%AF%81%E4%B9%A6"><span class="nav-number">4.3.</span> <span class="nav-text">前端动态生成证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx%E4%BB%A3%E7%90%86"><span class="nav-number">4.4.</span> <span class="nav-text">nginx代理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nginx-%E5%86%8D%E6%89%BE%E4%B8%AA%E5%9F%9F%E5%90%8D%E5%81%9A%E4%B8%AD%E8%BD%AC"><span class="nav-number">4.5.</span> <span class="nav-text">nginx+再找个域名做中转</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/20/ssl-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="基于SSL/TSL证书实现HTTPS双向认证2-实践方案 | Hengqu4">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          基于SSL/TSL证书实现HTTPS双向认证2-实践方案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-07-20 22:24:59 / 修改时间：19:43:52" itemprop="dateCreated datePublished" datetime="2023-07-20T22:24:59+08:00">2023-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">计算机网络</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/SSL/" itemprop="url" rel="index"><span itemprop="name">SSL</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>本文介绍了以下内容：</p>
+<ol>
+<li>HTTPS双向认证的过程。</li>
+<li>笔者所要解决的问题场景以及进行的前期准备(申请客户端证书)。</li>
+<li>前端携带证书发请求的几种方案，以及方案的代码样例和优缺点等。</li>
+</ol>
+<span id="more"></span>
+<h2 id="双向认证介绍"><a href="#双向认证介绍" class="headerlink" title="双向认证介绍"></a>双向认证介绍</h2><p>上篇文章已经介绍了HTTPS单向认证的原理和过程，详见<a href="https://hengqu4.github.io/2023/07/20/ssl-1">基于SSL&#x2F;TSL证书实现HTTPS双向认证1-原理介绍</a>。<br>HTTPS中的<strong>单向认证</strong>即为<strong>服务端认证</strong>，而客户端认证是可选的。<br>单向认证的过程中，客户端从服务器端下载服务器端公钥证书进行验证，然后建立安全通信通道。 </p>
+<p>HTTPS在TLS标准中是提供了双向认证的能力的，双向认证是指客户端和服务器端都需要验证对方的身份，在建立Https连接的过程中，握手的流程比单向认证多了几步。<br>双向认证的过程中，客户端除了需要从服务器端下载服务器的公钥证书进行验证外，还需要把客户端的公钥证书上传到服务器端给服务器端进行验证，等双方都认证通过了，才开始建立安全通信通道进行数据传输。 </p>
+<h2 id="问题场景描述"><a href="#问题场景描述" class="headerlink" title="问题场景描述"></a>问题场景描述</h2><p>目前要在移动端新增功能，该功能的后端接口原本是只能内网访问，由于新功能只能在外网环境下使用，现需要将该API接口暴露在公网环境下，为了安全性考虑，需要给移动端增加客户端认证，由此笔者对双向认证展开调，并提出了几个实践方案以及其优缺点。  </p>
+<h2 id="申请客户端证书"><a href="#申请客户端证书" class="headerlink" title="申请客户端证书"></a>申请客户端证书</h2><p>需要准备<strong>客户端证书</strong>，包括：</p>
+<ul>
+<li>cert.pem：公钥证书，</li>
+<li>private_key.pem：私钥证书，</li>
+<li>trust_cert_chain_server.pem：根证书。</li>
+</ul>
+<p>客户端的工作需要以下步骤：  </p>
+<ol>
+<li>生成客户端证书和私钥，可以使用openssl命令或者其他工具生成，注意证书需要符合服务器端的要求。</li>
+<li>把客户端证书上传到服务器端，服务器端需要把客户端证书添加到信任列表中。</li>
+<li>在前端代码中添加证书验证的逻辑，通过浏览器的API实现，比如在请求服务器端API时，需要把客户端证书和私钥一起发送到服务器端，然后根据服务器端返回的证书进行验证。</li>
+<li>如果证书验证通过，建立安全通信通道进行数据传输。</li>
+</ol>
+<p>需要注意的是，在前端代码中添加证书验证的逻辑时，需要注意证书的安全性和有效期，以及证书的更新和维护等问题。  </p>
+<h2 id="前端携带证书发请求"><a href="#前端携带证书发请求" class="headerlink" title="前端携带证书发请求"></a>前端携带证书发请求</h2><h3 id="证书放到请求头"><a href="#证书放到请求头" class="headerlink" title="证书放到请求头"></a>证书放到请求头</h3><p>在发请求的时候，前端需要使用XMLHttpRequest或Fetch API来发送请求。<br>其中，XMLHttpRequest可以使用setRequestHeader方法来设置请求头，Fetch API可以使用headers属性来设置请求头。<br>在设置请求头的时候，需要添加Authorization字段，并把证书和私钥通过Base64编码后放在该字段中。同时，还需要添加Content-Type字段，并指定为application&#x2F;json，表示请求体的格式为JSON。</p>
+<ol>
+<li>前端发送请求：<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成证书和私钥，并Base64编码</span></span><br><span class="line"><span class="keyword">const</span> cert = <span class="string">&#x27;xxxxxx&#x27;</span>; <span class="comment">// 客户端证书</span></span><br><span class="line"><span class="keyword">const</span> key = <span class="string">&#x27;xxxxxx&#x27;</span>; <span class="comment">// 客户端私钥</span></span><br><span class="line"><span class="keyword">const</span> authorization = <span class="string">`Basic <span class="subst">$&#123;btoa(<span class="string">`<span class="subst">$&#123;cert&#125;</span>:<span class="subst">$&#123;key&#125;</span>`</span>)&#125;</span>`</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 发送请求</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">&#x27;https://example.com/api&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> data = &#123; <span class="attr">name</span>: <span class="string">&#x27;John Doe&#x27;</span> &#125;;</span><br><span class="line"><span class="title function_">fetch</span>(url, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Authorization&#x27;</span>: authorization</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data)</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">.<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(error));</span><br></pre></td></tr></table></figure></li>
+<li>服务端需要在接收到请求时，从请求头中获取证书和私钥，并进行验证。可以使用Node.js中的tls模块来实现证书验证。<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> path = <span class="built_in">require</span>(<span class="string">&#x27;path&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = https.<span class="title function_">createServer</span>(&#123;</span><br><span class="line">  <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;server-key.pem&#x27;</span>)),</span><br><span class="line">  <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(path.<span class="title function_">join</span>(__dirname, <span class="string">&#x27;server-cert.pem&#x27;</span>)),</span><br><span class="line">  <span class="attr">requestCert</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">rejectUnauthorized</span>: <span class="literal">true</span></span><br><span class="line">&#125;, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> cert = req.<span class="property">socket</span>.<span class="title function_">getPeerCertificate</span>();</span><br><span class="line">  <span class="keyword">const</span> authorized = req.<span class="property">socket</span>.<span class="property">authorized</span>;</span><br><span class="line">  <span class="keyword">const</span> error = req.<span class="property">socket</span>.<span class="property">authorizationError</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (authorized) &#123;</span><br><span class="line">    <span class="comment">// 验证证书的有效性</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line">  &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">error</span>(error);</span><br><span class="line">    res.<span class="property">statusCode</span> = <span class="number">401</span>;</span><br><span class="line">    res.<span class="title function_">end</span>(<span class="string">&#x27;Unauthorized&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">server.<span class="title function_">listen</span>(<span class="number">443</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>注意</strong>：在实际使用中，需要根据服务器端的要求来设置Authorization字段的格式和内容。同时，还需要对证书和私钥进行保护，避免泄露和被恶意利用。 </p>
+<p><strong>缺点</strong>：按照这种做法，证书会暴露在静态代码中，这种行为会泄露我们的证书和私钥，在前端静态代码中直接暴露证书和私钥是非常不安全的，容易被攻击者窃取。  </p>
+<h3 id="浏览器客户端证书存储机制"><a href="#浏览器客户端证书存储机制" class="headerlink" title="浏览器客户端证书存储机制"></a>浏览器客户端证书存储机制</h3><p>我们可以考虑使用浏览器提供的客户端证书存储机制。这种机制可以让浏览器管理我们的证书和私钥，并在需要的时候自动调用。  </p>
+<ol>
+<li><p>把客户端证书导入到浏览器的证书存储中。这个过程因浏览器不同而异，一般来说，我们可以在浏览器的设置中找到证书管理工具，然后选择“导入证书”功能，把客户端证书导入到证书存储中。</p>
+</li>
+<li><p>在前端代码中添加证书验证的逻辑，通过浏览器的API实现。我们可以使用XMLHttpRequest或Fetch API来发送请求，并在请求中添加证书的标识。浏览器会自动调用证书存储中的证书和私钥，进行双向认证。<br>您说的很对，在前端静态代码中直接暴露证书和私钥是非常不安全的，容易被攻击者窃取。为了避免这种情况，我们可以考虑使用浏览器提供的客户端证书存储机制。这种机制可以让浏览器管理我们的证书和私钥，并在需要的时候自动调用。下面是具体的步骤：</p>
+</li>
+<li><p>生成客户端证书和私钥，可以使用openssl命令或其他工具生成，注意证书需要符合服务器端的要求。</p>
+</li>
+<li><p>把客户端证书上传到服务器端，并在服务器端添加到信任列表中。</p>
+</li>
+<li><p>把客户端证书导入到浏览器的证书存储中。这个过程因浏览器不同而异，一般来说，我们可以在浏览器的设置中找到证书管理工具，然后选择“导入证书”功能，把客户端证书导入到证书存储中。</p>
+</li>
+<li><p>在前端代码中添加证书验证的逻辑，通过浏览器的API实现。我们可以使用XMLHttpRequest或Fetch API来发送请求，并在请求中添加证书的标识。浏览器会自动调用证书存储中的证书和私钥，进行双向认证。</p>
+</li>
+</ol>
+<p>以下是示例代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送请求</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">&#x27;https://example.com/api&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> data = &#123; <span class="attr">name</span>: <span class="string">&#x27;John Doe&#x27;</span> &#125;;</span><br><span class="line"><span class="title function_">fetch</span>(url, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data),</span><br><span class="line">  <span class="attr">agent</span>: <span class="keyword">new</span> https.<span class="title class_">Agent</span>(&#123;</span><br><span class="line">    <span class="attr">cert</span>: certBuffer,</span><br><span class="line">    <span class="attr">key</span>: keyBuffer,</span><br><span class="line">    <span class="attr">passphrase</span>: <span class="string">&#x27;passphrase&#x27;</span></span><br><span class="line">  &#125;)</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">.<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(error));</span><br></pre></td></tr></table></figure>
+<p><strong>缺点</strong>：这种方法还需要让使用用户手动导入证书，会增加软件使用成本，这会影响用户体验。另外，如果每个用户都需要手动导入证书，那管理起来也会非常麻烦。</p>
+<h3 id="前端动态生成证书"><a href="#前端动态生成证书" class="headerlink" title="前端动态生成证书"></a>前端动态生成证书</h3><p>在客户端动态生成证书和私钥，并在发送请求时把证书和私钥一起发送给服务器端。</p>
+<ol>
+<li><p>在前端代码中使用crypto API动态生成客户端证书和私钥。可以使用以下代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> &#123; privateKey, publicKey &#125; = <span class="keyword">await</span> crypto.<span class="property">subtle</span>.<span class="title function_">generateKey</span>(</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">name</span>: <span class="string">&quot;RSASSA-PKCS1-v1_5&quot;</span>,</span><br><span class="line">    <span class="attr">modulusLength</span>: <span class="number">2048</span>,</span><br><span class="line">    <span class="attr">publicExponent</span>: <span class="keyword">new</span> <span class="title class_">Uint8Array</span>([<span class="number">1</span>, <span class="number">0</span>, <span class="number">1</span>]),</span><br><span class="line">    <span class="attr">hash</span>: &#123; <span class="attr">name</span>: <span class="string">&quot;SHA-256&quot;</span> &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="literal">true</span>,</span><br><span class="line">  [<span class="string">&quot;sign&quot;</span>, <span class="string">&quot;verify&quot;</span>]</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> cert = <span class="keyword">await</span> crypto.<span class="property">subtle</span>.<span class="title function_">exportKey</span>(<span class="string">&quot;spki&quot;</span>, publicKey);</span><br><span class="line"><span class="keyword">const</span> key = <span class="keyword">await</span> crypto.<span class="property">subtle</span>.<span class="title function_">exportKey</span>(<span class="string">&quot;pkcs8&quot;</span>, privateKey);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> certPEM = <span class="string">`-----BEGIN CERTIFICATE-----\n<span class="subst">$&#123;btoa(<span class="built_in">String</span>.fromCharCode(...<span class="keyword">new</span> <span class="built_in">Uint8Array</span>(cert)))&#125;</span>\n-----END CERTIFICATE-----`</span>;</span><br><span class="line"><span class="keyword">const</span> keyPEM = <span class="string">`-----BEGIN PRIVATE KEY-----\n<span class="subst">$&#123;btoa(<span class="built_in">String</span>.fromCharCode(...<span class="keyword">new</span> <span class="built_in">Uint8Array</span>(key)))&#125;</span>\n-----END PRIVATE KEY-----`</span>;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在发送请求时把证书和私钥一起发送到服务器端。可以使用XMLHttpRequest或Fetch API来发送请求，并把证书和私钥放在请求头中。以下是示例代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 发送请求</span></span><br><span class="line"><span class="keyword">const</span> url = <span class="string">&#x27;https://example.com/api&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> data = &#123; <span class="attr">name</span>: <span class="string">&#x27;John Doe&#x27;</span> &#125;;</span><br><span class="line"><span class="title function_">fetch</span>(url, &#123;</span><br><span class="line">  <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span><br><span class="line">  <span class="attr">headers</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;X-Client-Cert&#x27;</span>: certPEM,</span><br><span class="line">    <span class="string">&#x27;X-Client-Key&#x27;</span>: keyPEM</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data)</span><br><span class="line">&#125;)</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">response</span> =&gt;</span> response.<span class="title function_">json</span>())</span><br><span class="line">.<span class="title function_">then</span>(<span class="function"><span class="params">data</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(data))</span><br><span class="line">.<span class="title function_">catch</span>(<span class="function"><span class="params">error</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">error</span>(error));</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在服务器端进行证书的验证。服务器端需要把客户端证书添加到信任列表中，并在接收请求时验证证书的有效性。可以使用Node.js中的tls模块来实现证书验证。以下是示例代码：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> https = <span class="built_in">require</span>(<span class="string">&#x27;https&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">&#x27;fs&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> options = &#123;</span><br><span class="line">  <span class="attr">key</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;server-key.pem&#x27;</span>),</span><br><span class="line">  <span class="attr">cert</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;server-cert.pem&#x27;</span>),</span><br><span class="line">  <span class="attr">ca</span>: fs.<span class="title function_">readFileSync</span>(<span class="string">&#x27;client-cert.pem&#x27;</span>),</span><br><span class="line">  <span class="attr">requestCert</span>: <span class="literal">true</span>,</span><br><span class="line">  <span class="attr">rejectUnauthorized</span>: <span class="literal">true</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">https.<span class="title function_">createServer</span>(options, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> certPEM = req.<span class="property">socket</span>.<span class="title function_">getPeerCertificate</span>().<span class="property">raw</span>.<span class="title function_">toString</span>(<span class="string">&#x27;base64&#x27;</span>);</span><br><span class="line">  <span class="comment">// 验证证书的有效性</span></span><br><span class="line">  <span class="comment">// ...</span></span><br><span class="line">&#125;).<span class="title function_">listen</span>(<span class="number">443</span>);</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>问题</strong>：后端本来已经根据申请好的客户端证书写好了一套逻辑，如果前端改为用动态生成证书的方式，那么后端需要重新开发。</p>
+<h3 id="nginx代理"><a href="#nginx代理" class="headerlink" title="nginx代理"></a>nginx代理</h3><p>可以通过nginx来实现这个功能，在nginx中开启双向认证。<br>在nginx配置文件中添加以下内容，用于指定客户端证书和私钥的路径和密码：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ssl_client_certificate /path/to/client/cert.pem;</span><br><span class="line">ssl_client_key /path/to/client/key.pem;</span><br><span class="line">ssl_password_file /path/to/client/password.txt;</span><br></pre></td></tr></table></figure>
+<p>其中，<code>/path/to/client/cert.pem</code>和<code>/path/to/client/key.pem</code>分别为客户端证书和私钥的路径，<code>/path/to/client/password.txt</code>为密钥库密码的文件路径。  </p>
+<p>在nginx配置文件中添加以下内容，用于启用双向认证：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ssl_verify_client on;</span><br><span class="line">ssl_verify_depth 2;</span><br></pre></td></tr></table></figure>
+<p>其中，<code>ssl_verify_client on</code>表示启用双向认证，<code>ssl_verify_depth 2</code>表示验证证书链的深度。<br>重启nginx服务，使配置生效。  </p>
+<p>当客户端发起请求时，nginx会要求客户端提供证书，如果客户端没有提供证书或者证书验证失败，则请求将被拒绝。同时，由于证书和私钥的路径和密码并没有写在代码中，因此也提高了证书和私钥的安全性。</p>
+<p><strong>问题</strong>：小程序是打包到 微信平台&#x2F;飞书平台 发布的，开发人员没有办法在平台服务器中配置nginx的相关文件。</p>
+<h3 id="nginx-再找个域名做中转"><a href="#nginx-再找个域名做中转" class="headerlink" title="nginx+再找个域名做中转"></a>nginx+再找个域名做中转</h3><p>业务接口后端为test.com，中转域名为auth.com。  </p>
+<ul>
+<li>auth.com和test.com实现nginx的双向认证。  </li>
+<li>先从小程序代理到auth.com，这里部分接口做权限验证。通过后才可以调用业务接口。</li>
+</ul>
+<p>小程序代理的样例代码:</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">wx.<span class="title function_">request</span>(&#123;</span><br><span class="line">  <span class="attr">url</span>: <span class="string">&#x27;http://your-proxy-server.com/your-api-endpoint&#x27;</span>,</span><br><span class="line">  <span class="attr">header</span>: &#123;</span><br><span class="line">    <span class="string">&#x27;Proxy-Host&#x27;</span>: <span class="string">&#x27;your-backend-server.com&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Proxy-Port&#x27;</span>: <span class="string">&#x27;your-backend-port&#x27;</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title function_">success</span>(<span class="params">res</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(res.<span class="property">data</span>)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/07/20/ssl-2/" title="基于SSL&#x2F;TSL证书实现HTTPS双向认证2-实践方案">https://hengqu4.github.io/2023/07/20/ssl-2/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" rel="tag"># 计算机网络</a>
+              <a href="/tags/SSL/" rel="tag"># SSL</a>
+              <a href="/tags/HTTPS/" rel="tag"># HTTPS</a>
+              <a href="/tags/%E5%8F%8C%E5%90%91%E8%AE%A4%E8%AF%81/" rel="tag"># 双向认证</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/20/ssl-1/" rel="prev" title="基于SSL/TSL证书实现HTTPS双向认证1-原理介绍">
+                  <i class="fa fa-chevron-left"></i> 基于SSL/TSL证书实现HTTPS双向认证1-原理介绍
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

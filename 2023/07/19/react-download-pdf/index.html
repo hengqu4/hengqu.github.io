@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="场景描述前端实现点击按钮后，把某个div内的所有内容导出为word文档（.docx格式）。    将页面导出为文档时，需要设置页边距、行距、首行缩进等段落格式，以及字体大小等等（类似于在word中写文本也需要设置的一些信息）。 div内含有Echart生成的图表，我们在导出时，为了防止文档中的图表大小溢出，需要调节图片canvas&#x2F;img的大小，重新规定它们的width、height。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="React纯前端实现把div(含有Echart)下载导出为word文档">
+<meta property="og:url" content="https://hengqu4.github.io/2023/07/19/react-download-pdf/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:description" content="场景描述前端实现点击按钮后，把某个div内的所有内容导出为word文档（.docx格式）。    将页面导出为文档时，需要设置页边距、行距、首行缩进等段落格式，以及字体大小等等（类似于在word中写文本也需要设置的一些信息）。 div内含有Echart生成的图表，我们在导出时，为了防止文档中的图表大小溢出，需要调节图片canvas&#x2F;img的大小，重新规定它们的width、height。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-19T14:25:17.000Z">
+<meta property="article:modified_time" content="2023-07-20T11:43:52.739Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="javascript">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/07/19/react-download-pdf/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/07/19/react-download-pdf/","path":"2023/07/19/react-download-pdf/","title":"React纯前端实现把div(含有Echart)下载导出为word文档"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>React纯前端实现把div(含有Echart)下载导出为word文档 | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9C%BA%E6%99%AF%E6%8F%8F%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">场景描述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">解决思路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E5%AE%9E%E8%B7%B5"><span class="nav-number">3.</span> <span class="nav-text">代码实践</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/19/react-download-pdf/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="React纯前端实现把div(含有Echart)下载导出为word文档 | Hengqu4">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          React纯前端实现把div(含有Echart)下载导出为word文档
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-19 22:25:17" itemprop="dateCreated datePublished" datetime="2023-07-19T22:25:17+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-20 19:43:52" itemprop="dateModified" datetime="2023-07-20T19:43:52+08:00">2023-07-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/React/" itemprop="url" rel="index"><span itemprop="name">React</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>前端实现点击按钮后，把某个div内的所有内容导出为word文档（<code>.docx</code>格式）。  </p>
+<ul>
+<li>将页面导出为文档时，需要设置页边距、行距、首行缩进等段落格式，以及字体大小等等（类似于在word中写文本也需要设置的一些信息）。</li>
+<li>div内含有Echart生成的图表，我们在导出时，为了防止文档中的图表大小溢出，需要调节图片canvas&#x2F;img的大小，重新规定它们的<code>width</code>、<code>height</code>。</li>
+</ul>
+<h2 id="解决思路"><a href="#解决思路" class="headerlink" title="解决思路"></a>解决思路</h2><ol>
+<li>要下载的div设置id为<code>report</code>（自定义设置），获取这个dom元素<code>document.getElementById(&quot;report&quot;)</code>。</li>
+<li>将这段React代码转为html代码：<br>（1）canvas echart图表转为图片；<br>（2）做分页，<code>style=&quot;page-break-after: always&quot;</code>。<br>（3）替换一些语法兼容html，比如把 <code>&lt;br&gt;</code>转为<code>&lt;br&gt;&lt;br/&gt;</code>。<br>（4）设置页边距，在html中是设置body的<code>printmarginleft</code>、<code>printmarginright</code>、<code>printmargintop</code>、<code>printmarginbottom</code>属性。</li>
+<li>获取React代码的style样式代码，可以直接替换为html的格式，也可以重新设置样式以便适应word文档。设置段落格式、字体格式等。</li>
+<li>把上述html代码和style代码合并成一个完整的HTML文档。</li>
+<li>使用准备好的HTML创建Blob对象，调用FileSaver.saveAs把这个Blob导出为<code>.docx</code>文档。</li>
+</ol>
+<h2 id="代码实践"><a href="#代码实践" class="headerlink" title="代码实践"></a>代码实践</h2><span id="more"></span>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span>, &#123; useRef, useState, useEffect &#125; <span class="keyword">from</span> <span class="string">&quot;react&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Button</span>, message &#125; <span class="keyword">from</span> <span class="string">&quot;antd&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; saveAs &#125; <span class="keyword">from</span> <span class="string">&quot;file-saver&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;./style.scss&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">DownloadReportComp</span> = (<span class="params">props</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">const</span> componentRef = <span class="title function_">useRef</span>();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">downloadReport</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 这个dom元素是要导出的pdf的div容器</span></span><br><span class="line">    <span class="keyword">const</span> element = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&quot;report&quot;</span>); </span><br><span class="line"></span><br><span class="line">    <span class="comment">// 把当前 vue 所展示的页面对应的 html 转换成一个字符串，这里用到了上面的三个函数，所以，如果是写在外面的话要引用进来</span></span><br><span class="line">    <span class="keyword">let</span> html = <span class="title function_">getReportHtml</span>(<span class="title function_">getHtml</span>(element), <span class="title function_">getStyle</span>());</span><br><span class="line">    <span class="keyword">const</span> f_name = <span class="string">&quot;打印word报告&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 使用我们刚刚准备好的html模板并创建Blob对象</span></span><br><span class="line">    <span class="keyword">let</span> blob = <span class="keyword">new</span> <span class="title class_">Blob</span>([html], &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="string">&quot;application/vnd.openxmlformats-officedocument.wordprocessingml.document;charset=utf-8&quot;</span>,</span><br><span class="line">    &#125;);</span><br><span class="line">    <span class="comment">// 调用FileSaver.saveAs导出下载word</span></span><br><span class="line">    <span class="title function_">saveAs</span>(blob, f_name + <span class="string">&quot;.docx&quot;</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">getReportHtml</span> = (<span class="params">mhtml, style</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">`</span></span><br><span class="line"><span class="string">				Content-Type: text/html; charset=&quot;utf-8&quot;</span></span><br><span class="line"><span class="string">					&lt;!DOCTYPE html&gt;</span></span><br><span class="line"><span class="string">					&lt;html&gt;</span></span><br><span class="line"><span class="string">					&lt;head&gt;</span></span><br><span class="line"><span class="string">					&lt;style&gt;</span></span><br><span class="line"><span class="string">						<span class="subst">$&#123;style&#125;</span></span></span><br><span class="line"><span class="string">					&lt;/style&gt;</span></span><br><span class="line"><span class="string">					&lt;/head&gt;</span></span><br><span class="line"><span class="string">					&lt;body&gt;</span></span><br><span class="line"><span class="string">						<span class="subst">$&#123;mhtml&#125;</span></span></span><br><span class="line"><span class="string">					&lt;/body&gt;</span></span><br><span class="line"><span class="string">					&lt;/html&gt;</span></span><br><span class="line"><span class="string">				`</span>;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">getHtml</span> = (<span class="params">dom</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> _dom = dom || <span class="variable language_">document</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> canvass = _dom.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;canvas&quot;</span>);</span><br><span class="line">    <span class="comment">// let imgRepalce = _dom.querySelectorAll(&quot;.imgRepalce&quot;);</span></span><br><span class="line">    <span class="keyword">let</span> imageList = [];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// console.log(&quot;canvass&quot;, [...canvass], &quot;imgRepalce&quot;, imgRepalce);</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">//canvas echart图表转为图片</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k4 = <span class="number">0</span>; k4 &lt; canvass.<span class="property">length</span>; k4++) &#123;</span><br><span class="line">      <span class="keyword">let</span> imageURL = canvass[k4].<span class="title function_">toDataURL</span>(<span class="string">&quot;image/png&quot;</span>);</span><br><span class="line">      <span class="keyword">let</span> img = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&quot;img&quot;</span>);</span><br><span class="line">      img.<span class="property">src</span> = imageURL;</span><br><span class="line">      img.<span class="property">width</span> = <span class="number">460</span>;</span><br><span class="line">      imageList.<span class="title function_">push</span>(img.<span class="property">outerHTML</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// console.log(&quot;imageList&quot;, [...imageList]);</span></span><br><span class="line">    <span class="comment">//做分页</span></span><br><span class="line">    <span class="comment">//style=&quot;page-break-after: always&quot;</span></span><br><span class="line">    <span class="keyword">let</span> pages = _dom.<span class="title function_">querySelectorAll</span>(<span class="string">&quot;.result&quot;</span>);</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> k5 = <span class="number">0</span>; k5 &lt; pages.<span class="property">length</span>; k5++) &#123;</span><br><span class="line">      pages[k5].<span class="title function_">setAttribute</span>(<span class="string">&quot;style&quot;</span>, <span class="string">&quot;page-break-after: always&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> result = _dom.<span class="property">outerHTML</span>;</span><br><span class="line">    <span class="comment">//result = result.replace(/&lt;colgroup&gt;(.*?)&lt;\/colgroup&gt;/gi, &#x27;&#x27;)</span></span><br><span class="line">    <span class="comment">//result = result.replace(/&lt;canvas (.*?)&gt;&lt;\/canvas&gt;/gi, &#x27;&#x27;)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// for (let i = 0; i &lt; canvass.length; i++) &#123;</span></span><br><span class="line">    <span class="comment">//   result = result.replace(</span></span><br><span class="line">    <span class="comment">//     canvass[i].outerHTML,</span></span><br><span class="line">    <span class="comment">//     &#x27;&lt;div class=&quot;img-replace&quot;&gt;&#x27; + imageList[i] + &quot;&lt;/div&gt;&quot;</span></span><br><span class="line">    <span class="comment">//   );</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; canvass.<span class="property">length</span>; i++) &#123;</span><br><span class="line">      result = result.<span class="title function_">replace</span>(canvass[i].<span class="property">outerHTML</span>, imageList[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    result = result.<span class="title function_">replace</span>(<span class="regexp">/&lt;img (.*?)&gt;/gi</span>, <span class="string">&quot;&lt;img $1&gt;&lt;/img&gt;&quot;</span>);</span><br><span class="line">    result = result.<span class="title function_">replace</span>(<span class="regexp">/&lt;br&gt;/gi</span>, <span class="string">&quot;&lt;br&gt;&lt;/br&gt;&quot;</span>);</span><br><span class="line">    result = result.<span class="title function_">replace</span>(<span class="regexp">/&lt;hr&gt;/gi</span>, <span class="string">&quot;&lt;hr&gt;&lt;/hr&gt;&quot;</span>);</span><br><span class="line">    <span class="comment">// console.log(&quot;result&quot;, result);</span></span><br><span class="line">    <span class="keyword">return</span> (</span><br><span class="line">      <span class="string">&quot;&lt;body printmarginleft=&#x27;48&#x27; printmarginright=&#x27;48&#x27; printmargintop=&#x27;32&#x27; printmarginbottom=&#x27;32&#x27;&gt;&quot;</span> +</span><br><span class="line">      result +</span><br><span class="line">      <span class="string">&quot;&lt;/body&gt;&quot;</span></span><br><span class="line">    );</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> <span class="title function_">getStyle</span> = (<span class="params">notPrint</span>) =&gt; &#123;</span><br><span class="line">    <span class="keyword">let</span> str = <span class="string">&#x27;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;/meta&gt;&#x27;</span>;</span><br><span class="line">    <span class="comment">// let str = &#x27;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;/meta&gt;&#x27;,</span></span><br><span class="line">    <span class="comment">// let styles = document.querySelectorAll(&quot;style&quot;);</span></span><br><span class="line">    <span class="comment">// for (let i = 0; i &lt; styles.length; i++) &#123;</span></span><br><span class="line">    <span class="comment">//   str += styles[i].outerHTML;</span></span><br><span class="line">    <span class="comment">// &#125;</span></span><br><span class="line">    str +=</span><br><span class="line">      <span class="string">&quot;&lt;style&gt;.report-passage&#123;line-height: 2em;text-indent: 2em; margin: 0.5em 0;&#125;&lt;/style&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    str +=</span><br><span class="line">      <span class="string">&quot;&lt;style&gt;&quot;</span> +</span><br><span class="line">      (notPrint ? notPrint : <span class="string">&quot;.no-print&quot;</span>) +</span><br><span class="line">      <span class="string">&quot;&#123;display:none;&#125;&lt;/style&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    str +=</span><br><span class="line">      <span class="string">&quot;&lt;style&gt;.report-container p&#123;margin: 0.5em 0;text-indent: 0;&#125;&lt;/style&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">    str += <span class="string">&quot;&lt;style&gt;h5&#123;font-color: #2fb89e;&#125;&lt;/style&gt;&quot;</span>;</span><br><span class="line">    str += <span class="string">&quot;&lt;/head&gt;&quot;</span>;</span><br><span class="line">    <span class="comment">// console.log(&quot;style&quot;, str);</span></span><br><span class="line">    <span class="keyword">return</span> str;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">useEffect</span>(<span class="function">() =&gt;</span> &#123;&#125;, []);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> (</span><br><span class="line">    <span class="language-xml"><span class="tag">&lt;<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">Button</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">type</span>=<span class="string">&quot;primary&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">onClick</span>=<span class="string">&#123;()</span> =&gt;</span> downloadReport()&#125;</span></span><br><span class="line"><span class="language-xml">        style=&#123;&#123; position: &quot;absolute&quot;, zIndex: 5, right: 50 &#125;&#125;</span></span><br><span class="line"><span class="language-xml">      &gt;</span></span><br><span class="line"><span class="language-xml">        下载</span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">Button</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;<span class="name">div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">id</span>=<span class="string">&quot;report&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">ref</span>=<span class="string">&#123;componentRef&#125;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">style</span>=<span class="string">&#123;&#123;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          <span class="attr">fontSize:</span> &quot;<span class="attr">1rem</span>&quot;,</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">        <span class="attr">className</span>=<span class="string">&quot;report-container&quot;</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">      &gt;</span></span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;report-passage&quot;</span> <span class="attr">className</span>=<span class="string">&quot;report-passage&quot;</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">textAlign:</span> &quot;<span class="attr">center</span>&quot;, <span class="attr">fontSize:</span> &quot;<span class="attr">1.2rem</span>&quot;, <span class="attr">fontWeight:</span> <span class="attr">700</span> &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          &gt;</span></span></span><br><span class="line"><span class="language-xml">            能力评价报告</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span></span></span></span><br><span class="line"><span class="tag"><span class="language-xml">            <span class="attr">style</span>=<span class="string">&#123;&#123;</span> <span class="attr">textAlign:</span> &quot;<span class="attr">center</span>&quot;, <span class="attr">fontSize:</span> &quot;<span class="attr">1.2rem</span>&quot;, <span class="attr">fontWeight:</span> <span class="attr">700</span> &#125;&#125;</span></span></span><br><span class="line"><span class="tag"><span class="language-xml">          &gt;</span></span></span><br><span class="line"><span class="language-xml">            杨浦区</span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>一、基本情况<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>名称：四平路街道。<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>常住人口：120000 人。<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>二、风景评估结果<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>最终得分为12。<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">p</span>&gt;</span>三、建筑评估情况<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">          <span class="tag">&lt;<span class="name">div</span>&gt;</span>评估结果为15。<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml"></span></span><br><span class="line"><span class="language-xml">          &#123;/* 下方是一个自定义组件，里面是Echart生成的一些图表 */&#125;</span></span><br><span class="line"><span class="language-xml">          &#123;/* <span class="tag">&lt;<span class="name">PassageChart</span> /&gt;</span> */&#125;</span></span><br><span class="line"><span class="language-xml">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span></span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title class_">DownloadReportComp</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/07/19/react-download-pdf/" title="React纯前端实现把div(含有Echart)下载导出为word文档">https://hengqu4.github.io/2023/07/19/react-download-pdf/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/javascript/" rel="tag"># javascript</a>
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/18/feishu-download-file/" rel="prev" title="飞书小程序下载文件相关API(本地、Storage)">
+                  <i class="fa fa-chevron-left"></i> 飞书小程序下载文件相关API(本地、Storage)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/19/vue3-wss/" rel="next" title="Vue中封装并使用WebSocket">
+                  Vue中封装并使用WebSocket <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
