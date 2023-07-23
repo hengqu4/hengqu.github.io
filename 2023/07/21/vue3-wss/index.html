@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="WebSocket介绍WebSocket是一种在Web浏览器和服务器之间建立持久性连接的协议，它允许双向通信，而不需要像HTTP协议那样每次请求都需要重新建立连接。WebSocket是全双工通信协议，可以在客户端和服务器之间实现实时数据传输。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue中封装并使用WebSocket">
+<meta property="og:url" content="https://hengqu4.github.io/2023/07/21/vue3-wss/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:description" content="WebSocket介绍WebSocket是一种在Web浏览器和服务器之间建立持久性连接的协议，它允许双向通信，而不需要像HTTP协议那样每次请求都需要重新建立连接。WebSocket是全双工通信协议，可以在客户端和服务器之间实现实时数据传输。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-07-21T02:25:31.000Z">
+<meta property="article:modified_time" content="2023-07-23T10:24:34.323Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="Vue3">
+<meta property="article:tag" content="WebSocket">
+<meta property="article:tag" content="wss">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/07/21/vue3-wss/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/07/21/vue3-wss/","path":"2023/07/21/vue3-wss/","title":"Vue中封装并使用WebSocket"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Vue中封装并使用WebSocket | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">WebSocket介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket%E7%8A%B6%E6%80%81%E7%A0%81"><span class="nav-number">2.</span> <span class="nav-text">WebSocket状态码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebSocket-Web-API"><span class="nav-number">3.</span> <span class="nav-text">WebSocket Web API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E5%87%BD%E6%95%B0"><span class="nav-number">3.1.</span> <span class="nav-text">构造函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">3.2.</span> <span class="nav-text">属性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-number">3.3.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8B%E4%BB%B6"><span class="nav-number">3.4.</span> <span class="nav-text">事件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JS%E4%BD%BF%E7%94%A8WebSocket%E7%A4%BA%E4%BE%8B"><span class="nav-number">4.</span> <span class="nav-text">JS使用WebSocket示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Vue3%E4%B8%AD%E5%B0%81%E8%A3%85WebSocket"><span class="nav-number">5.</span> <span class="nav-text">Vue3中封装WebSocket</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85websocket"><span class="nav-number">5.1.</span> <span class="nav-text">封装websocket</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%81%E8%A3%85websocket%E7%9A%84%E6%8E%A5%E5%8F%A3API"><span class="nav-number">5.2.</span> <span class="nav-text">封装websocket的接口API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A1%B5%E9%9D%A2%E4%B8%AD%E8%B0%83%E7%94%A8%E6%8E%A5%E5%8F%A3API"><span class="nav-number">5.3.</span> <span class="nav-text">页面中调用接口API</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/21/vue3-wss/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Vue中封装并使用WebSocket | Hengqu4">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue中封装并使用WebSocket
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-21 10:25:31" itemprop="dateCreated datePublished" datetime="2023-07-21T10:25:31+08:00">2023-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-23 18:24:34" itemprop="dateModified" datetime="2023-07-23T18:24:34+08:00">2023-07-23</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="WebSocket介绍"><a href="#WebSocket介绍" class="headerlink" title="WebSocket介绍"></a>WebSocket介绍</h2><p>WebSocket是一种在Web浏览器和服务器之间建立持久性连接的协议，它允许双向通信，而不需要像HTTP协议那样每次请求都需要重新建立连接。<br>WebSocket是全双工通信协议，可以在客户端和服务器之间实现实时数据传输。  </p>
+<span id="more"></span>
+<p>WebSocket通常在以下场景下使用：</p>
+<ol>
+<li>实时数据传输：例如股票市场、体育比赛、即时消息等需要实时更新数据的应用场景。</li>
+<li>在线游戏：需要实时传输游戏状态、位置、动作等数据。</li>
+<li>视频会议：需要实时传输音视频数据，WebSocket可以用于传输控制信息。</li>
+<li>实时协作：例如团队协作、在线编辑等场景，需要实时传输文本、图像、音频等数据。</li>
+<li>实时通知：例如推送通知、即时聊天等场景，需要实时传输消息。</li>
+</ol>
+<p>WebSocket适用于需要实时双向通信的应用场景，它可以提供更好的用户体验和更高的交互性。</p>
+<h2 id="WebSocket状态码"><a href="#WebSocket状态码" class="headerlink" title="WebSocket状态码"></a>WebSocket状态码</h2><table>
+<thead>
+<tr>
+<th>状态码</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>101</td>
+<td>HTTP协议切换为WebSocket协议。连接成功。</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>正常断开连接。</td>
+</tr>
+<tr>
+<td>1001</td>
+<td>服务器断开连接。</td>
+</tr>
+<tr>
+<td>1002</td>
+<td>websocket协议错误。</td>
+</tr>
+<tr>
+<td>1003</td>
+<td>客户端接受了不支持数据格式（只允许接受文本消息。是客户端限制不接受二进制数据，而不是websocket协议不支持二进制数据）。</td>
+</tr>
+<tr>
+<td>1006</td>
+<td>异常关闭。</td>
+</tr>
+<tr>
+<td>1007</td>
+<td>客户端接受了无效数据格式（文本消息编码不是utf-8）。</td>
+</tr>
+<tr>
+<td>1009</td>
+<td>传输数据量过大。</td>
+</tr>
+<tr>
+<td>1010</td>
+<td>客户端终止连接。</td>
+</tr>
+<tr>
+<td>1011</td>
+<td>服务器终止连接。</td>
+</tr>
+<tr>
+<td>1012</td>
+<td>服务端正在重新启动。</td>
+</tr>
+<tr>
+<td>1013</td>
+<td>服务端临时终止。</td>
+</tr>
+<tr>
+<td>1014</td>
+<td>通过网关或代理请求服务器，服务器无法及时响应。</td>
+</tr>
+<tr>
+<td>1015</td>
+<td>TLS握手失败。</td>
+</tr>
+</tbody></table>
+<h2 id="WebSocket-Web-API"><a href="#WebSocket-Web-API" class="headerlink" title="WebSocket Web API"></a>WebSocket Web API</h2><blockquote>
+<p>WebSocket Web API: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket">https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket</a></p>
+</blockquote>
+<p>WebSocket 对象提供了用于创建和管理 WebSocket 连接，以及可以通过该连接发送和接收数据的 API。</p>
+<h3 id="构造函数"><a href="#构造函数" class="headerlink" title="构造函数"></a>构造函数</h3><ul>
+<li><code>WebSocket(url[, protocols])</code> ： 使用 WebSocket() 构造函数来构造一个 WebSocket 对象。</li>
+</ul>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/binaryType">https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/binaryType</a>  </p>
+</blockquote>
+<ul>
+<li><code>WebSocket.binaryType</code> ： 使用二进制的数据类型连接。</li>
+<li><code>WebSocket.bufferedAmount</code> ： 未发送至服务器的字节数。</li>
+<li><code>WebSocket.extensions</code> ： 服务器选择的扩展。</li>
+<li><code>WebSocket.onclose</code> ： 用于指定连接关闭后的回调函数。</li>
+<li><code>WebSocket.onerror</code> ： 用于指定连接失败后的回调函数。</li>
+<li><code>WebSocket.onmessage</code> ： 用于指定当从服务器接受到信息时的回调函数。</li>
+<li><code>WebSocket.onopen</code> ： 用于指定连接成功后的回调函数。</li>
+<li><code>WebSocket.protocol</code> ： 服务器选择的下属协议。</li>
+<li><code>WebSocket.readyState</code> ： 当前的链接状态。</li>
+<li><code>WebSocket.url</code> ： WebSocket 的绝对路径。</li>
+</ul>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/close">https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/close</a>  </p>
+</blockquote>
+<ul>
+<li><code>WebSocket.close([code[, reason]])</code> ： 关闭当前链接。</li>
+<li><code>WebSocket.send(data)</code> ： 对要传输的数据进行排队。</li>
+</ul>
+<h3 id="事件"><a href="#事件" class="headerlink" title="事件"></a>事件</h3><blockquote>
+<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/close_event">https://developer.mozilla.org/zh-CN/docs/Web/API/WebSocket/close_event</a>  </p>
+</blockquote>
+<p>使用 addEventListener() 或将一个事件监听器赋值给本接口的 oneventname 属性，来监听下面的事件。  </p>
+<ul>
+<li><code>close</code> ： 当一个 WebSocket 连接被关闭时触发。 也可以通过 onclose 属性来设置。</li>
+<li><code>error</code> ： 当一个 WebSocket 连接因错误而关闭时触发，例如无法发送数据时。 也可以通过 onerror 属性来设置。</li>
+<li><code>message</code> ： 当通过 WebSocket 收到数据时触发。 也可以通过 onmessage 属性来设置。</li>
+<li><code>open</code> ： 当一个 WebSocket 连接成功时触发。 也可以通过 onopen 属性来设置。</li>
+</ul>
+<h2 id="JS使用WebSocket示例"><a href="#JS使用WebSocket示例" class="headerlink" title="JS使用WebSocket示例"></a>JS使用WebSocket示例</h2><p>以下是使用WebSocket的示例代码：</p>
+<p>在前端JavaScript代码中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> socket = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(<span class="string">&#x27;ws://localhost:8080&#x27;</span>);</span><br><span class="line"></span><br><span class="line">socket.<span class="title function_">addEventListener</span>(<span class="string">&#x27;open&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  socket.<span class="title function_">send</span>(<span class="string">&#x27;Hello Server!&#x27;</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">socket.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Message from server &#x27;</span>, event.<span class="property">data</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">socket.<span class="title function_">addEventListener</span>(<span class="string">&#x27;close&#x27;</span>, <span class="keyword">function</span> (<span class="params">event</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket connection closed&#x27;</span>);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在后端Node.js代码中：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="title class_">WebSocket</span> = <span class="built_in">require</span>(<span class="string">&#x27;ws&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> wss = <span class="keyword">new</span> <span class="title class_">WebSocket</span>.<span class="title class_">Server</span>(&#123; <span class="attr">port</span>: <span class="number">8080</span> &#125;);</span><br><span class="line"></span><br><span class="line">wss.<span class="title function_">on</span>(<span class="string">&#x27;connection&#x27;</span>, <span class="keyword">function</span> <span class="title function_">connection</span>(<span class="params">ws</span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket connection established&#x27;</span>);</span><br><span class="line"></span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&#x27;message&#x27;</span>, <span class="keyword">function</span> <span class="title function_">incoming</span>(<span class="params">message</span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;received: %s&#x27;</span>, message);</span><br><span class="line">    ws.<span class="title function_">send</span>(<span class="string">&#x27;Server received: &#x27;</span> + message);</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  ws.<span class="title function_">on</span>(<span class="string">&#x27;close&#x27;</span>, <span class="keyword">function</span> (<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket connection closed&#x27;</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>在这个示例中，前端JavaScript代码创建了一个WebSocket对象，并连接到服务器的端口8080。当连接建立时，它会向服务器发送一条消息，当从服务器收到消息时，它会打印消息内容。当WebSocket连接关闭时，它会打印一条消息。</p>
+<p>后端Node.js代码使用WebSocket模块创建了一个WebSocket服务器，并在端口8080上监听连接请求。当客户端连接到服务器时，它会打印一条消息。当从客户端收到消息时，它会打印消息内容并将消息发送回客户端。当WebSocket连接关闭时，它会打印一条消息。</p>
+<h2 id="Vue3中封装WebSocket"><a href="#Vue3中封装WebSocket" class="headerlink" title="Vue3中封装WebSocket"></a>Vue3中封装WebSocket</h2><h3 id="封装websocket"><a href="#封装websocket" class="headerlink" title="封装websocket"></a>封装websocket</h3><p><strong>&#x2F;utils&#x2F;websocket.ts</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ElMessage</span>, <span class="title class_">ElNotification</span> <span class="keyword">as</span> message &#125; <span class="keyword">from</span> <span class="string">&#x27;element-plus&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; getEnvName &#125; <span class="keyword">from</span> <span class="string">&#x27;~/utils&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; backend_url &#125; <span class="keyword">from</span> <span class="string">&#x27;~/constvars&#x27;</span>;</span><br><span class="line"><span class="keyword">const</span> defaultUrl = <span class="string">&#x27;wss://api-backend-stg.com&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">class</span> <span class="title class_">WlWebsocket</span> &#123;</span><br><span class="line">  <span class="keyword">private</span> <span class="attr">websocket</span>: <span class="built_in">any</span> = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> wsBaseUrl = defaultUrl;</span><br><span class="line">  <span class="comment">// 开启标识</span></span><br><span class="line">  <span class="keyword">private</span> socket_open = <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// 心跳timer</span></span><br><span class="line">  <span class="keyword">private</span> <span class="attr">hearbeat_timer</span>: <span class="built_in">any</span> = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 心跳发送频率</span></span><br><span class="line">  <span class="keyword">private</span> hearbeat_interval = <span class="number">8</span> * <span class="number">1000</span>;</span><br><span class="line">  <span class="comment">// 是否自动重连</span></span><br><span class="line">  <span class="keyword">private</span> is_reconnect = <span class="literal">false</span>;</span><br><span class="line">  <span class="comment">// 重连次数</span></span><br><span class="line">  <span class="keyword">private</span> reconnect_count = <span class="number">3</span>;</span><br><span class="line">  <span class="comment">// 已发起重连次数</span></span><br><span class="line">  <span class="keyword">private</span> reconnect_current = <span class="number">1</span>;</span><br><span class="line">  <span class="comment">// 重连timer</span></span><br><span class="line">  <span class="keyword">private</span> <span class="attr">reconnect_timer</span>: <span class="built_in">any</span> = <span class="literal">null</span>;</span><br><span class="line">  <span class="comment">// 重连频率</span></span><br><span class="line">  <span class="keyword">private</span> reconnect_interval = <span class="number">5</span> * <span class="number">1000</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">private</span> url = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  <span class="keyword">private</span> query = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">url: <span class="built_in">string</span>, query: <span class="built_in">string</span> = <span class="string">&#x27;&#x27;</span></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">url</span> = url;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">query</span> = query;</span><br><span class="line">    <span class="keyword">let</span> <span class="attr">env</span>: <span class="built_in">any</span> = <span class="title function_">getEnvName</span>();</span><br><span class="line">    <span class="keyword">if</span> (!!env) &#123;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">wsBaseUrl</span> = <span class="string">&#x27;wss://&#x27;</span> + backend_url[env];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;getEnvName() env&#x27;</span>, env, <span class="variable language_">this</span>.<span class="property">wsBaseUrl</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  init = <span class="function">(<span class="params">receiveMessage: <span class="built_in">Function</span> | <span class="literal">null</span>, onSocketClose: <span class="built_in">Function</span> | <span class="literal">null</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (!(<span class="string">&#x27;WebSocket&#x27;</span> <span class="keyword">in</span> <span class="variable language_">window</span>)) &#123;</span><br><span class="line">      message.<span class="title function_">warning</span>(<span class="string">&#x27;浏览器不支持WebSocket&#x27;</span>);</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">const</span> wsUrl = <span class="variable language_">this</span>.<span class="property">wsBaseUrl</span> + <span class="variable language_">this</span>.<span class="property">url</span> + <span class="variable language_">this</span>.<span class="property">query</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;==wsUrl==&#x27;</span>, wsUrl);</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span> = <span class="keyword">new</span> <span class="title class_">WebSocket</span>(wsUrl);</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">onmessage</span> = <span class="function">(<span class="params">data: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">if</span> (!!receiveMessage) &#123;</span><br><span class="line">        <span class="comment">// console.log(&#x27;==data===&#x27;, data);</span></span><br><span class="line">        <span class="keyword">const</span> res = <span class="title class_">JSON</span>.<span class="title function_">parse</span>(data?.<span class="property">data</span>);</span><br><span class="line">        <span class="keyword">if</span> (res.<span class="property">err_code</span> != <span class="number">0</span>) &#123;</span><br><span class="line">          <span class="title class_">ElMessage</span>.<span class="title function_">error</span>(res?.<span class="property">message</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="title function_">receiveMessage</span>(<span class="title class_">JSON</span>.<span class="title function_">parse</span>(data?.<span class="property">data</span>));</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">onclose</span> = <span class="function">(<span class="params">e: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket连接关闭&#x27;</span>, e);</span><br><span class="line">      <span class="keyword">if</span> (!!onSocketClose) &#123;</span><br><span class="line">        <span class="title function_">onSocketClose</span>();</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">socket_open</span> = <span class="literal">false</span>;</span><br><span class="line">      <span class="comment">// 需要重新连接</span></span><br><span class="line">      <span class="keyword">if</span> (!!<span class="variable language_">this</span>.<span class="property">is_reconnect</span>) &#123;</span><br><span class="line">        <span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">          !!<span class="variable language_">this</span>.<span class="property">is_reconnect</span>,</span><br><span class="line">          <span class="string">&#x27;WebSocket连接关闭 重新连接------&#x27;</span>,</span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">reconnect_current</span></span><br><span class="line">        );</span><br><span class="line">        <span class="variable language_">this</span>.<span class="property">reconnect_timer</span> = <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">          <span class="comment">// 超过重连次数</span></span><br><span class="line">          <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">reconnect_current</span> &gt; <span class="variable language_">this</span>.<span class="property">reconnect_count</span>) &#123;</span><br><span class="line">            <span class="built_in">clearTimeout</span>(<span class="variable language_">this</span>.<span class="property">reconnect_timer</span>);</span><br><span class="line">            <span class="variable language_">this</span>.<span class="property">is_reconnect</span> = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">          &#125;</span><br><span class="line">          <span class="comment">// 记录重连次数</span></span><br><span class="line">          <span class="variable language_">this</span>.<span class="property">reconnect_current</span>++;</span><br><span class="line">          <span class="variable language_">this</span>.<span class="title function_">reconnect</span>();</span><br><span class="line">        &#125;, <span class="variable language_">this</span>.<span class="property">reconnect_interval</span>);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接成功</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">onopen</span> = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket连接成功&#x27;</span>);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">socket_open</span> = <span class="literal">true</span>;</span><br><span class="line">      <span class="comment">// this.is_reconnect = true;</span></span><br><span class="line">      <span class="comment">// 开启心跳</span></span><br><span class="line">      <span class="comment">// this.heartbeat();</span></span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 连接发生错误</span></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">onerror</span> = <span class="function">(<span class="params">e: <span class="built_in">any</span></span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket连接出错&#x27;</span>, e);</span><br><span class="line">      <span class="title class_">ElMessage</span>.<span class="title function_">error</span>(e.<span class="property">code</span> + <span class="string">&#x27; 连接出错&#x27;</span>);</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  heartbeat = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;== this.heartbeat 开启心跳&#x27;</span>);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">hearbeat_timer</span> &amp;&amp; <span class="built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="property">hearbeat_timer</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">hearbeat_timer</span> = <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket setInterval(())  sen data&#x27;</span>);</span><br><span class="line">      <span class="comment">// let data = &#123;&#125;;</span></span><br><span class="line">      <span class="comment">// this.send(data);</span></span><br><span class="line">    &#125;, <span class="variable language_">this</span>.<span class="property">hearbeat_interval</span>);</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  send = <span class="function">(<span class="params">data: <span class="built_in">string</span>, callback = <span class="literal">null</span></span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(</span><br><span class="line">      <span class="string">&#x27;WebSocket=====send=====&#x27;</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">readyState</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">OPEN</span>,</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">websocket</span></span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 开启状态直接发送</span></span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">readyState</span> === <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="property">OPEN</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;send  if&#x27;</span>, <span class="variable language_">this</span>.<span class="property">websocket</span>);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="title function_">send</span>(<span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data));</span><br><span class="line">      <span class="comment">// @ts-ignore</span></span><br><span class="line">      callback &amp;&amp; <span class="title function_">callback</span>();</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;send  else&#x27;</span>);</span><br><span class="line">      <span class="built_in">clearInterval</span>(<span class="variable language_">this</span>.<span class="property">hearbeat_timer</span>);</span><br><span class="line">      <span class="title class_">ElMessage</span>.<span class="title function_">warning</span>(<span class="string">&#x27;无法发送消息,socket链接已断开&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  close = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;WebSocket 关闭关闭关闭===&#x27;</span>);</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">is_reconnect</span> = <span class="literal">false</span>;</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span>.<span class="title function_">close</span>();</span><br><span class="line">    <span class="variable language_">this</span>.<span class="property">websocket</span> = <span class="literal">null</span>;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  <span class="comment">/**</span></span><br><span class="line"><span class="comment">   * 重新连接</span></span><br><span class="line"><span class="comment">   */</span></span><br><span class="line">  reconnect = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (<span class="variable language_">this</span>.<span class="property">websocket</span> &amp;&amp; !<span class="variable language_">this</span>.<span class="property">is_reconnect</span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;重新连接  this.close();&#x27;</span>);</span><br><span class="line">      <span class="variable language_">this</span>.<span class="title function_">close</span>();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// console.log(&#x27;重新连接  this.init&#x27;);</span></span><br><span class="line">    <span class="comment">// this.init(null);</span></span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="封装websocket的接口API"><a href="#封装websocket的接口API" class="headerlink" title="封装websocket的接口API"></a>封装websocket的接口API</h3><p><strong>&#x2F;apis&#x2F;test.ts</strong></p>
+<figure class="highlight ts"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; toQueryString &#125; <span class="keyword">from</span> <span class="string">&#x27;~/utils&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">WlWebsocket</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;~/utils/websocket&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取符合条件的所有Test列表</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> <span class="title function_">apiGetTestList</span> = (<span class="params">query: <span class="built_in">any</span></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">WlWebsocket</span>(<span class="string">`/api/test/<span class="subst">$&#123;query&#125;</span>/list`</span>);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h3 id="页面中调用接口API"><a href="#页面中调用接口API" class="headerlink" title="页面中调用接口API"></a>页面中调用接口API</h3><p><strong>&#x2F;views&#x2F;test&#x2F;index.vue</strong></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">el-button</span> <span class="attr">class</span>=<span class="string">&quot;search-button&quot;</span> @<span class="attr">click</span>=<span class="string">&quot;filter()&quot;</span> <span class="attr">:disabled</span>=<span class="string">&quot;loading&quot;</span>&gt;</span></span><br><span class="line">        筛选</span><br><span class="line">      <span class="tag">&lt;/<span class="name">el-button</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;<span class="name">el-row</span> <span class="attr">v-if</span>=<span class="string">&quot;tableList.length &gt; 0&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">el-table</span> <span class="attr">:data</span>=<span class="string">&quot;tableList&quot;</span> <span class="attr">v-loading</span>=<span class="string">&quot;loading&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">el-table-column</span> <span class="attr">prop</span>=<span class="string">&quot;test_id&quot;</span> <span class="attr">label</span>=<span class="string">&quot;test&quot;</span> <span class="attr">width</span>=<span class="string">&quot;240&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;/<span class="name">el-table-column</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">el-table</span>&gt;</span></span><br><span class="line"></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">el-pagination</span></span></span><br><span class="line"><span class="tag">            <span class="attr">v-model:currentPage</span>=<span class="string">&quot;searchForm.page&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">v-model:page-size</span>=<span class="string">&quot;searchForm.size&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">:page-sizes</span>=<span class="string">&quot;[5, 10, 20, 50]&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">layout</span>=<span class="string">&quot;total, sizes, prev, pager, next, jumper&quot;</span></span></span><br><span class="line"><span class="tag">            <span class="attr">:total</span>=<span class="string">&quot;totalNumber&quot;</span></span></span><br><span class="line"><span class="tag">            @<span class="attr">size-change</span>=<span class="string">&quot;handleSizeChange&quot;</span></span></span><br><span class="line"><span class="tag">            @<span class="attr">current-change</span>=<span class="string">&quot;handleCurrentChange&quot;</span></span></span><br><span class="line"><span class="tag">          /&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">      <span class="tag">&lt;/<span class="name">el-row</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span> <span class="attr">lang</span>=<span class="string">&quot;ts&quot;</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref, reactive, onBeforeUnmount, onBeforeMount &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; <span class="title class_">Icon</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;@iconify/vue/dist/iconify&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; iconMap &#125; <span class="keyword">from</span> <span class="string">&#x27;~/auth&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; apiGetTestList &#125; <span class="keyword">from</span> <span class="string">&#x27;~/apis/order-image&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> loading = <span class="title function_">ref</span>(<span class="literal">false</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> tableList = <span class="title function_">ref</span>([] <span class="keyword">as</span> any);</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> totalNumber = <span class="title function_">ref</span>(<span class="number">0</span>);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> searchForm = <span class="title function_">reactive</span>(&#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">page</span>: <span class="number">1</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">size</span>: <span class="number">10</span>,</span></span><br><span class="line"><span class="language-javascript">&#125;);</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> webSocket = <span class="title function_">ref</span>();</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 重新渲染table数据</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">refreshListData</span> = (<span class="params">res: any</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> date = <span class="keyword">new</span> <span class="title class_">Date</span>();</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">console</span>.<span class="title function_">log</span>(</span></span><br><span class="line"><span class="language-javascript">    <span class="string">&#x27;重新渲染table数据 res 时间&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">    date.<span class="title function_">getMinutes</span>() + <span class="string">&#x27;:&#x27;</span> + date.<span class="title function_">getSeconds</span>(),</span></span><br><span class="line"><span class="language-javascript">    res</span></span><br><span class="line"><span class="language-javascript">  );</span></span><br><span class="line"><span class="language-javascript">  loading.<span class="property">value</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">if</span> (res.<span class="property">data</span> !== <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    tableList.<span class="property">value</span> = res.<span class="property">data</span>;</span></span><br><span class="line"><span class="language-javascript">    totalNumber.<span class="property">value</span> = res.<span class="property">total</span>;</span></span><br><span class="line"><span class="language-javascript">  &#125; <span class="keyword">else</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    tableList.<span class="property">value</span> = [];</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">sendSocketMessage</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">const</span> msg = &#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">page</span>: searchForm.<span class="property">page</span>,</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">size</span>: searchForm.<span class="property">size</span>,</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">update</span>: <span class="literal">true</span>,</span></span><br><span class="line"><span class="language-javascript">  &#125;;</span></span><br><span class="line"><span class="language-javascript">  webSocket.<span class="property">value</span>.<span class="title function_">send</span>(msg);</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">closeSocket</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">if</span> (!!webSocket.<span class="property">value</span> &amp;&amp; webSocket.<span class="property">value</span>.<span class="property">websocket</span> != <span class="literal">null</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">    webSocket.<span class="property">value</span>.<span class="title function_">close</span>();</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 搜索事件</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">publicSearch</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  webSocket.<span class="property">value</span> = <span class="title function_">apiGetTestList</span>(&#123; <span class="attr">query</span>: <span class="string">&#x27;1111&#x27;</span> &#125;);</span></span><br><span class="line"><span class="language-javascript">  webSocket.<span class="property">value</span>.<span class="title function_">init</span>(</span></span><br><span class="line"><span class="language-javascript">    <span class="function">(<span class="params">res: any</span>) =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      <span class="title function_">refreshListData</span>(res);</span></span><br><span class="line"><span class="language-javascript">    &#125;,</span></span><br><span class="line"><span class="language-javascript">    <span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">      loading.<span class="property">value</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">    &#125;</span></span><br><span class="line"><span class="language-javascript">  );</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 每页显示条目个数</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">handleSizeChange</span> = (<span class="params">val: any</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  loading.<span class="property">value</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">  searchForm.<span class="property">size</span> = val;</span></span><br><span class="line"><span class="language-javascript">  searchForm.<span class="property">page</span> = <span class="number">1</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">sendSocketMessage</span>();</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 当前页数</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">handleCurrentChange</span> = (<span class="params">val: any</span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  loading.<span class="property">value</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">  searchForm.<span class="property">page</span> = val;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">sendSocketMessage</span>();</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="comment">// 点击筛选按钮</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">const</span> <span class="title function_">filter</span> = <span class="keyword">async</span> (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27; filterEvent &#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">  loading.<span class="property">value</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">  searchForm.<span class="property">size</span> = <span class="number">10</span>;</span></span><br><span class="line"><span class="language-javascript">  searchForm.<span class="property">page</span> = <span class="number">1</span>;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">publicSearch</span>();</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">onBeforeUnmount</span>(<span class="function">() =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">closeSocket</span>();</span></span><br><span class="line"><span class="language-javascript">&#125;);</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">style</span> <span class="attr">lang</span>=<span class="string">&quot;scss&quot;</span> <span class="attr">scoped</span>&gt;</span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/07/21/vue3-wss/" title="Vue中封装并使用WebSocket">https://hengqu4.github.io/2023/07/21/vue3-wss/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+              <a href="/tags/Vue3/" rel="tag"># Vue3</a>
+              <a href="/tags/WebSocket/" rel="tag"># WebSocket</a>
+              <a href="/tags/wss/" rel="tag"># wss</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/20/ssl-2/" rel="prev" title="基于SSL/TSL证书实现HTTPS双向认证2-实践方案">
+                  <i class="fa fa-chevron-left"></i> 基于SSL/TSL证书实现HTTPS双向认证2-实践方案
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
