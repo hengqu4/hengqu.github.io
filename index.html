@@ -125,7 +125,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">14</span>
+          <span class="site-state-item-count">15</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -136,7 +136,7 @@
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-count">24</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -521,6 +521,114 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2023/07/19/react-download-pdf/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/19/js-bluetooth-upload/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Hengqu4">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2023/07/19/js-bluetooth-upload/" class="post-title-link" itemprop="url">【蓝牙分包传输】飞书小程序实现通过蓝牙传输文件给其他设备【TS】</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-19 11:20:59" itemprop="dateCreated datePublished" datetime="2023-07-19T11:20:59+08:00">2023-07-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-07-25 23:17:41" itemprop="dateModified" datetime="2023-07-25T23:17:41+08:00">2023-07-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/Mpx/" itemprop="url" rel="index"><span itemprop="name">Mpx</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <!-- # 【蓝牙分包传输】飞书小程序实现通过蓝牙传输文件给其他设备【TS】 -->
+<h2 id="场景描述"><a href="#场景描述" class="headerlink" title="场景描述"></a>场景描述</h2><p>在飞书小程序中实现下载文件并把文件通过蓝牙传输给其他设备【分包传输】。  </p>
+<ol>
+<li>下载文件（这里用的是网上找的一个测试下载url） ；</li>
+<li>文件是ArrayBuffer格式，并把文件缓存到飞书小程序的Storage；<blockquote>
+<p>在飞书中下载文件见：<a href="https://hengqu4.github.io/2023/07/18/feishu-download-file/">https://hengqu4.github.io/2023/07/18/feishu-download-file/</a>  </p>
+</blockquote>
+</li>
+<li>调用飞书API，扫描附近的蓝牙设备；</li>
+<li>选择目标设备并连接配对（如果连接需要配对码，需要用户自己知道该设备的配对码）；</li>
+<li>成功配对后，开始进行蓝牙传输；由于飞书API的限制，每次只能传输20字节，所以我们要进行分包传输（类似于前端大文件切片上传）。<br>传输过程中要进行<strong>crc16循环冗余校验</strong></li>
+</ol>
+<p>本篇文章重点写的是：<br>第4步【如何配对蓝牙】<br>第5步【如何实现<strong>蓝牙分包传输</strong>，以及如何实现<strong>crc16循环冗余校验</strong>】  </p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/07/19/js-bluetooth-upload/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1016,103 +1124,6 @@
 
 
 
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/14/vue2-download-div/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.jpeg">
-      <meta itemprop="name" content="hengqu4">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Hengqu4">
-      <meta itemprop="description" content="Master of Software Engineering">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Hengqu4">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/07/14/vue2-download-div/" class="post-title-link" itemprop="url">纯前端生成图片下载导出【html2canvas下载不显示的div】</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-07-14 10:07:32" itemprop="dateCreated datePublished" datetime="2023-07-14T10:07:32+08:00">2023-07-14</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">更新于</span>
-      <time title="修改时间：2023-07-19 18:49:45" itemprop="dateModified" datetime="2023-07-19T18:49:45+08:00">2023-07-19</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
-        </span>
-          ，
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E5%89%8D%E7%AB%AF/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <!-- # 纯前端生成图片下载导出【html2canvas下载不显示的div】 -->
-<h2 id="用html2canvas下载div"><a href="#用html2canvas下载div" class="headerlink" title="用html2canvas下载div"></a>用html2canvas下载div</h2><p>前端有块div元素，点击“下载”按钮后，利用<code>html2canvas</code>把div转为canvas，再下载成格式为<code>png</code>的图片。  </p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2023/07/14/vue2-download-div/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
   <nav class="pagination">
     <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
@@ -1165,5 +1176,5 @@
 
 
 
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":210,"height":280,"position":"left","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":150,"height":200,"position":"right","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
 </html>
