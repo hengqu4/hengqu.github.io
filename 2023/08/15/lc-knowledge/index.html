@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="刷题-复杂度">
+<meta property="og:url" content="https://hengqu4.github.io/2023/08/15/lc-knowledge/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hengqu4.github.io/2023/08/15/lc-knowledge/rbt1.webp">
+<meta property="og:image" content="https://hengqu4.github.io/2023/08/15/lc-knowledge/rbt2.webp">
+<meta property="og:image" content="https://hengqu4.github.io/2023/08/15/lc-knowledge/rbt3.webp">
+<meta property="article:published_time" content="2023-08-15T10:58:02.000Z">
+<meta property="article:modified_time" content="2023-08-18T08:59:28.790Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="Java,Go,React,Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hengqu4.github.io/2023/08/15/lc-knowledge/rbt1.webp">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/08/15/lc-knowledge/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/08/15/lc-knowledge/","path":"2023/08/15/lc-knowledge/","title":"刷题-复杂度"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>刷题-复杂度 | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E5%B8%B8%E8%A7%81%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">java常见数据结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E6%9C%89%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="nav-number">2.</span> <span class="nav-text">二叉树有哪些？</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91"><span class="nav-number">3.</span> <span class="nav-text">二叉树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E6%A0%91%E9%81%8D%E5%8E%86"><span class="nav-number">3.1.</span> <span class="nav-text">二叉树遍历</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E5%BA%8F"><span class="nav-number">3.1.1.</span> <span class="nav-text">前序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E5%BA%8F"><span class="nav-number">3.1.2.</span> <span class="nav-text">后序</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%8C%E6%A0%88%E3%80%90%E7%AE%80%E5%8D%95%E3%80%91"><span class="nav-number">3.1.2.1.</span> <span class="nav-text">双栈【简单】</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8D%95%E6%A0%88"><span class="nav-number">3.1.2.2.</span> <span class="nav-text">单栈</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E7%BA%A2%E9%BB%91%E6%A0%91"><span class="nav-number">4.</span> <span class="nav-text">红黑树</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%A7%E8%B4%A8"><span class="nav-number">4.1.</span> <span class="nav-text">性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%8D%E6%9D%82%E5%BA%A6"><span class="nav-number">4.2.</span> <span class="nav-text">复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.3.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9"><span class="nav-number">4.3.1.</span> <span class="nav-text">节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%B3%E6%97%8B"><span class="nav-number">4.3.2.</span> <span class="nav-text">右旋</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E8%8A%82%E7%82%B9"><span class="nav-number">4.3.3.</span> <span class="nav-text">插入节点</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%8E%A5%E9%9B%A8%E6%B0%B4"><span class="nav-number">5.</span> <span class="nav-text">接雨水</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B-O-n-2"><span class="nav-number">5.1.</span> <span class="nav-text">暴力 O(n^2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92"><span class="nav-number">5.2.</span> <span class="nav-text">动态规划</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%95%E8%B0%83%E6%A0%88"><span class="nav-number">5.3.</span> <span class="nav-text">单调栈</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/08/15/lc-knowledge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="刷题-复杂度 | Hengqu4">
+      <meta itemprop="description" content=" ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          刷题-复杂度
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-08-15 18:58:02" itemprop="dateCreated datePublished" datetime="2023-08-15T18:58:02+08:00">2023-08-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-18 16:59:28" itemprop="dateModified" datetime="2023-08-18T16:59:28+08:00">2023-08-18</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="java常见数据结构"><a href="#java常见数据结构" class="headerlink" title="java常见数据结构"></a>java常见数据结构</h1><table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>查找</th>
+<th>插入</th>
+<th>删除</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>有序数组</td>
+<td>O(lgn)</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>数组ArrayList</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>链表LinkedList</td>
+<td>O(n)</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>红黑二叉树TreeMap</td>
+<td>O(lgn)</td>
+<td>O(lgn)</td>
+<td>O(lgn)</td>
+</tr>
+<tr>
+<td>哈希表HashMap (hash碰撞情况都是O(lgn))</td>
+<td>O(1)</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody></table>
+<h1 id="二叉树有哪些？"><a href="#二叉树有哪些？" class="headerlink" title="二叉树有哪些？"></a>二叉树有哪些？</h1><p>满二叉树，完全二叉树。</p>
+<blockquote>
+<p>区别：<br>满二叉树：除最后一层无任何子节点外，每一层上的所有结点都有两个子结点二叉树。<br>完全二叉树：1.只允许最后一层有空缺结点且空缺在右边，即叶子结点只能在层次最大的两层上出现； 2. 对任一结点，如果其右子树的深度为j，则其左子树的深度必为j或j+1。 即度为1的点只有1个或0个。</p>
+</blockquote>
+<p>二叉搜索树，平衡二叉树 (AVL)，红黑树，字典树。<br>最小堆，最大堆。<br>多路搜索树：B-树，B+树。<br>霍夫曼树，伸展树。</p>
+<h1 id="二叉树"><a href="#二叉树" class="headerlink" title="二叉树"></a>二叉树</h1><h2 id="二叉树遍历"><a href="#二叉树遍历" class="headerlink" title="二叉树遍历"></a>二叉树遍历</h2><blockquote>
+<p>二叉树后序遍历的两种易写的非递归写法[<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/80578741]">https://zhuanlan.zhihu.com/p/80578741]</a></p>
+</blockquote>
+<p>前序遍历：根左右<br>中序遍历：左根右<br>后序遍历：左右根</p>
+<h3 id="前序"><a href="#前序" class="headerlink" title="前序"></a>前序</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Definition for a binary tree node.</span></span><br><span class="line"><span class="comment"> * public class TreeNode &#123;</span></span><br><span class="line"><span class="comment"> *     int val;</span></span><br><span class="line"><span class="comment"> *     TreeNode left;</span></span><br><span class="line"><span class="comment"> *     TreeNode right;</span></span><br><span class="line"><span class="comment"> *     TreeNode(int x) &#123; val = x; &#125;</span></span><br><span class="line"><span class="comment"> * &#125;</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; ans = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">preorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Stack&lt;TreeNode&gt; s = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">cur</span> <span class="operator">=</span> root;</span><br><span class="line">        <span class="keyword">while</span>(cur!=<span class="literal">null</span> || !s.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">while</span>(cur!=<span class="literal">null</span>) &#123; </span><br><span class="line">                <span class="comment">// 经过并访问所有左节点</span></span><br><span class="line">                ans.add(cur.val);</span><br><span class="line">                s.push(cur);</span><br><span class="line">                cur = cur.left;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="comment">// 自底向上找栈中节点的第一个非空右子树</span></span><br><span class="line">            <span class="keyword">while</span>(!s.isEmpty() &amp;&amp; cur==<span class="literal">null</span>) &#123;</span><br><span class="line">                cur = s.pop().right; </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="后序"><a href="#后序" class="headerlink" title="后序"></a>后序</h3><h4 id="双栈【简单】"><a href="#双栈【简单】" class="headerlink" title="双栈【简单】"></a>双栈【简单】</h4><p>左右根 倒过去 是 根右左。<br>可以先求出遍历顺序是<strong>根右左</strong>的节点序列，再倒序，便刚好是后序遍历的顺序：<strong>左右根</strong>。<br>我们可以选用两个栈，一个用于根右左遍历，一个用于保存序列。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; ans = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">postorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Stack&lt;TreeNode&gt; s = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">cur</span> <span class="operator">=</span> root;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 保存节点序列的栈</span></span><br><span class="line">        Stack&lt;Integer&gt; res = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;(); </span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(cur!=<span class="literal">null</span> || !s.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">while</span>(cur!=<span class="literal">null</span>) &#123;</span><br><span class="line">                res.push(cur.val);</span><br><span class="line">                s.push(cur);</span><br><span class="line">                cur = cur.right; <span class="comment">// 修改处</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!s.isEmpty()) &#123;</span><br><span class="line">                cur = s.pop();</span><br><span class="line">                cur = cur.left; <span class="comment">// 修改处</span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">while</span>(!res.isEmpty()) &#123;</span><br><span class="line">            <span class="comment">// 获取倒序的根右左序列</span></span><br><span class="line">            ans.add(res.pop()); </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="单栈"><a href="#单栈" class="headerlink" title="单栈"></a>单栈</h4><p>后序遍历的开头和前序遍历是可以一样的，都是先经过二叉树的最左分支，直到经过的节点是个叶子节点（没有左右孩子）为止。</p>
+<p>前序遍历和中序遍历的时候，它们经过的路径都是左根右，对于前序和中序来说，访问路径基本上跟经过路径是一致的。</p>
+<p>但是在后序遍历中，我们先经过根节点，但是我们不会去访问它，而是会选择先访问它的右子节点。所以在这种情况下，我们会将根节点留在栈中不弹出，等到需要访问它的时候再出。</p>
+<ul>
+<li><p>关键点：考虑什么时候才能访问节点？</p>
+<blockquote>
+<p>发现是叶子节点，必然会访问。</p>
+</blockquote>
+</li>
+<li><p>什么时候才需要访问根节点呢？</p>
+<blockquote>
+<p>访问完右子节点之后。</p>
+</blockquote>
+</li>
+<li><p>我们如何获取这个信息？</p>
+<blockquote>
+<p>可以记录一下上一次访问的节点，然后判断一下当前经过的节点和上一次访问的节点是什么关系就好了。如果当前经过的节点的右子节点是上一次访问的节点，那么需要访问当前节点了。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>什么时候才能访问节点？</strong><br>1.当前经过节点是叶子节点。<br>2.当前经过节点的右子节点是上一次访问的节点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    List&lt;Integer&gt; ans = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">    <span class="keyword">public</span> List&lt;Integer&gt; <span class="title function_">postorderTraversal</span><span class="params">(TreeNode root)</span> &#123;</span><br><span class="line">        Stack&lt;TreeNode&gt; s = <span class="keyword">new</span> <span class="title class_">Stack</span>&lt;&gt;();</span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">cur</span> <span class="operator">=</span> root;  </span><br><span class="line">        <span class="type">TreeNode</span> <span class="variable">pre</span> <span class="operator">=</span> <span class="literal">null</span>;  <span class="comment">// 用于记录上一次访问的节点</span></span><br><span class="line">        <span class="keyword">while</span>(cur!=<span class="literal">null</span> || !s.isEmpty()) &#123;</span><br><span class="line">            <span class="keyword">while</span>(cur!=<span class="literal">null</span>) &#123;</span><br><span class="line">                s.push(cur);</span><br><span class="line">                cur = cur.left;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(!s.isEmpty()) &#123;</span><br><span class="line">                cur = s.pop();</span><br><span class="line">                <span class="keyword">if</span>(cur.right==<span class="literal">null</span> || pre==cur.right) &#123; <span class="comment">// 访问节点的条件</span></span><br><span class="line">                    ans.add(cur.val); <span class="comment">// 访问</span></span><br><span class="line">                    pre = cur; <span class="comment">// 这一步是记录上一次访问的节点</span></span><br><span class="line">                    cur = <span class="literal">null</span>; <span class="comment">// 此处为了跳过下一次循环的访问左子节点的过程，直接进入栈的弹出阶段，因为但凡在栈中的节点，它们的左子节点都肯定被经过且已放入栈中。</span></span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123; <span class="comment">// 不访问节点的条件</span></span><br><span class="line">                    s.push(cur); <span class="comment">// 将已弹出的根节点放回栈中</span></span><br><span class="line">                    cur = cur.right; <span class="comment">// 经过右子节点</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e136ec79235c/">https://www.jianshu.com/p/e136ec79235c/</a></p>
+</blockquote>
+<h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>性质1：每个节点要么是黑色，要么是红色。<br>性质2：根节点是黑色。<br>性质3：每个叶子节点（NIL）是黑色。<br>性质4：每个红色结点的两个子结点一定都是黑色。<br>性质5：任意一结点到每个叶子结点的路径都包含数量相同的黑结点。</p>
+<img src="/2023/08/15/lc-knowledge/rbt1.webp" width="50%">
+
+<p>左旋<br><img src="/2023/08/15/lc-knowledge/rbt2.webp" width="90%"></p>
+<p>右旋<br><img src="/2023/08/15/lc-knowledge/rbt3.webp" width="90%"></p>
+<h2 id="复杂度"><a href="#复杂度" class="headerlink" title="复杂度"></a>复杂度</h2><p>查找、增加、删除的时间复杂度都是O(log N)。</p>
+<p>采用迭代器遍历一棵红黑树的时间复杂度是O(N)。</p>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><h3 id="节点"><a href="#节点" class="headerlink" title="节点"></a>节点</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">RBNode</span>&lt;T&gt; &#123;</span><br><span class="line">    T element;</span><br><span class="line">    RBNode&lt;T&gt; left;</span><br><span class="line">    RBNode&lt;T&gt; right;</span><br><span class="line">    RBNode&lt;T&gt; parent;</span><br><span class="line">    <span class="type">byte</span> color;<span class="comment">//0为红色，1为黑色</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">RBNode</span><span class="params">(T x)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.element=x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="右旋"><a href="#右旋" class="headerlink" title="右旋"></a>右旋</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 旋转父节点p的右儿子到p的位置</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> p</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span> </span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">rotateWithRightChild</span><span class="params">(RBNode&lt;T&gt; p)</span>&#123;</span><br><span class="line">        RBNode&lt;T&gt; x=p.right;</span><br><span class="line">        RBNode&lt;T&gt; g=p.parent;</span><br><span class="line">        <span class="comment">//break1: p的右换指，同时改父指针</span></span><br><span class="line">        <span class="comment">//tip1: x.left可能为nullNode,因为在处理的过程中对nullNode的parent</span></span><br><span class="line">        <span class="comment">//可以是任意值，所以这里不做处理</span></span><br><span class="line">        p.right=x.left;</span><br><span class="line">        x.left.parent=p;</span><br><span class="line">        <span class="comment">//break2: x的左换指，同时改父指针</span></span><br><span class="line">        x.left=p;</span><br><span class="line">        p.parent=x;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//break3: g的孩子更换为x</span></span><br><span class="line">        <span class="comment">//tip2: g为nullNode,说明p为root,旋转需要换新根</span></span><br><span class="line">        <span class="keyword">if</span>(g==nullNode) &#123;</span><br><span class="line">            root=x;<span class="comment">//旋转后换新根</span></span><br><span class="line">            root.parent=nullNode;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(g.left==p) &#123;</span><br><span class="line">            g.left=x;</span><br><span class="line">            x.parent=g;</span><br><span class="line">        &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">            g.right=x;</span><br><span class="line">            x.parent=g;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="插入节点"><a href="#插入节点" class="headerlink" title="插入节点"></a>插入节点</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * 输入一个节点值为x到红黑树根root中</span></span><br><span class="line"><span class="comment"> * <span class="doctag">@param</span> x</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">insert</span><span class="params">(T x)</span> &#123;</span><br><span class="line">    RBNode&lt;T&gt; p,cur;</span><br><span class="line">    p=nullNode;<span class="comment">//p指向cur的父节点</span></span><br><span class="line">    cur=root;</span><br><span class="line">    <span class="keyword">while</span>(cur!=nullNode) &#123;</span><br><span class="line">        p=cur;</span><br><span class="line">        <span class="keyword">if</span>(x.compareTo(cur.element)&lt;<span class="number">0</span>)</span><br><span class="line">            cur=cur.left;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span>(x.compareTo(cur.element)&gt;<span class="number">0</span>)</span><br><span class="line">            cur=cur.right;</span><br><span class="line">        <span class="keyword">else</span> <span class="comment">//找到重复的，不需要进行进一步操作</span></span><br><span class="line">            <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//此时p位置即为插入位置的父节点</span></span><br><span class="line">    RBNode&lt;T&gt; newX=getNewNode(x);<span class="comment">//新生成的节点为红色</span></span><br><span class="line">    newX.parent=p;<span class="comment">//即便p为nullNode也是符合的</span></span><br><span class="line">    <span class="keyword">if</span>(p==nullNode) &#123;</span><br><span class="line">        root=newX;</span><br><span class="line">        root.color=<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">return</span>;<span class="comment">//如果是根的话可以直接返回</span></span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(x.compareTo(p.element)&lt;<span class="number">0</span>) &#123;</span><br><span class="line">        p.left=newX;</span><br><span class="line">    &#125;<span class="keyword">else</span> &#123;</span><br><span class="line">        p.right=newX;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//插入完毕，开始调整红色新插入的x节点</span></span><br><span class="line">    <span class="keyword">if</span> (p.color==<span class="number">1</span>) <span class="comment">//其父节点是黑色，插入完毕</span></span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="comment">//红红冲突，进行调整</span></span><br><span class="line">        insertBalance(newX);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"></span><br><span class="line"># 排序</span><br><span class="line">![page-sort1](sort.jpg <span class="string">&quot;十大排序算法&quot;</span>)</span><br><span class="line"></span><br><span class="line">* 哪些稳定？</span><br><span class="line">&gt; 插冒归、桶计基</span><br><span class="line"></span><br><span class="line"># LRU缓存</span><br><span class="line">LRU算法（Least recently used）最近最少使用。</span><br><span class="line">## 性质</span><br><span class="line"><span class="number">1.</span> O(<span class="number">1</span>) 时间复杂度完成 get &amp; put 操作</span><br><span class="line"><span class="number">2.</span> get 完成时，需要将 get 的数据设置为最新</span><br><span class="line"><span class="number">3.</span> put 数据时，当超出容量时，需要将最久未使用的数据删除，并将 put 的数据设置为最新</span><br><span class="line">  </span><br><span class="line">## 算法和数据结构</span><br><span class="line">* 通过链表来标识出数据的新旧关系</span><br><span class="line">* 需要 O(<span class="number">1</span>) 的时间复杂度完成操作，则还需要使用哈希表来存储数据</span><br><span class="line">* put 插入新元素时，判断缓存中 元素 是否存在：</span><br><span class="line">  * 如果存在：把链表中的元素删除，map中的数据不用删除，再在链表头部插入元素，并更新map，直接返回；</span><br><span class="line">  * 缓存不存在+缓存没有满：直接把元素插入链表的表头，map中插入新元素；</span><br><span class="line">  * 缓存不存在+缓存满了：移除表尾元素（最旧未访问元素），将元素K插入表头，map中插入新元素；</span><br><span class="line">* get 方法是线程安全方法，可以用`<span class="keyword">synchronized</span>`关键字：</span><br><span class="line">* get 方法 获取元素时，判断 缓存中(map)是否存在该元素：</span><br><span class="line">  * 如果存在，把该节点删除并在链表头部插入该元素，并更新map 返回当前元素；</span><br><span class="line">  * 如果不存在，直接返回<span class="literal">null</span>。</span><br><span class="line">## 代码实现</span><br><span class="line">```java</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">LRUCache</span> &#123;</span><br><span class="line">    <span class="keyword">class</span> <span class="title class_">DLinkedNode</span> &#123;</span><br><span class="line">        <span class="type">int</span> key;</span><br><span class="line">        <span class="type">int</span> value;</span><br><span class="line">        DLinkedNode prev;</span><br><span class="line">        DLinkedNode next;</span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">DLinkedNode</span><span class="params">()</span> &#123;&#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="title function_">DLinkedNode</span><span class="params">(<span class="type">int</span> _key, <span class="type">int</span> _value)</span> &#123;key = _key; value = _value;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> Map&lt;Integer, DLinkedNode&gt; cache = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;Integer, DLinkedNode&gt;();</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> size;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> capacity;</span><br><span class="line">    <span class="keyword">private</span> DLinkedNode head, tail;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">LRUCache</span><span class="params">(<span class="type">int</span> capacity)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.size = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">this</span>.capacity = capacity;</span><br><span class="line">        <span class="comment">// 使用伪头部和伪尾部节点</span></span><br><span class="line">        head = <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>();</span><br><span class="line">        tail = <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>();</span><br><span class="line">        head.next = tail;</span><br><span class="line">        tail.prev = head;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">get</span><span class="params">(<span class="type">int</span> key)</span> &#123;</span><br><span class="line">        <span class="type">DLinkedNode</span> <span class="variable">node</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 如果 key 存在，先通过哈希表定位，再移到头部</span></span><br><span class="line">        moveToHead(node);</span><br><span class="line">        <span class="keyword">return</span> node.value;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">put</span><span class="params">(<span class="type">int</span> key, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">        <span class="type">DLinkedNode</span> <span class="variable">node</span> <span class="operator">=</span> cache.get(key);</span><br><span class="line">        <span class="keyword">if</span> (node == <span class="literal">null</span>) &#123;</span><br><span class="line">            <span class="comment">// 如果 key 不存在，创建一个新的节点</span></span><br><span class="line">            <span class="type">DLinkedNode</span> <span class="variable">newNode</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">DLinkedNode</span>(key, value);</span><br><span class="line">            <span class="comment">// 添加进哈希表</span></span><br><span class="line">            cache.put(key, newNode);</span><br><span class="line">            <span class="comment">// 添加至双向链表的头部</span></span><br><span class="line">            addToHead(newNode);</span><br><span class="line">            ++size;</span><br><span class="line">            <span class="keyword">if</span> (size &gt; capacity) &#123;</span><br><span class="line">                <span class="comment">// 如果超出容量，删除双向链表的尾部节点</span></span><br><span class="line">                <span class="type">DLinkedNode</span> <span class="variable">tail</span> <span class="operator">=</span> removeTail();</span><br><span class="line">                <span class="comment">// 删除哈希表中对应的项</span></span><br><span class="line">                cache.remove(tail.key);</span><br><span class="line">                --size;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// 如果 key 存在，先通过哈希表定位，再修改 value，并移到头部</span></span><br><span class="line">            node.value = value;</span><br><span class="line">            moveToHead(node);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">addToHead</span><span class="params">(DLinkedNode node)</span> &#123;</span><br><span class="line">        node.prev = head;</span><br><span class="line">        node.next = head.next;</span><br><span class="line">        head.next.prev = node;</span><br><span class="line">        head.next = node;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">removeNode</span><span class="params">(DLinkedNode node)</span> &#123;</span><br><span class="line">        node.prev.next = node.next;</span><br><span class="line">        node.next.prev = node.prev;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">moveToHead</span><span class="params">(DLinkedNode node)</span> &#123;</span><br><span class="line">        removeNode(node);</span><br><span class="line">        addToHead(node);</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="keyword">private</span> DLinkedNode <span class="title function_">removeTail</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DLinkedNode</span> <span class="variable">res</span> <span class="operator">=</span> tail.prev;</span><br><span class="line">        removeNode(res);</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="接雨水"><a href="#接雨水" class="headerlink" title="接雨水"></a>接雨水</h1><h2 id="暴力-O-n-2"><a href="#暴力-O-n-2" class="headerlink" title="暴力 O(n^2)"></a>暴力 O(n^2)</h2><p>对于数组中的每个元素，我们找出下雨后水能达到的最高位置，等于两边最大高度的较小值减去当前高度的值。</p>
+<blockquote>
+<p>时间复杂度： O(n2)。数组中的每个元素都需要向左向右扫描。<br>空间复杂度 O(1)的额外空间。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">        <span class="type">int</span> ans=<span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;height.length-<span class="number">1</span>;i++)&#123;</span><br><span class="line">            <span class="type">int</span> left_max=<span class="number">0</span>,right_max=<span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=i;j&gt;=<span class="number">0</span>;j--)&#123;</span><br><span class="line">                left_max=max(left_max,height[j]);<span class="comment">//向左遍历找最大值</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> j=i;j&lt;=height.length-<span class="number">1</span>;j++)&#123;</span><br><span class="line">                right_max=max(right_max,height[j]);<span class="comment">//向右遍历找最大值</span></span><br><span class="line">            &#125;</span><br><span class="line">            ans+=min(left_max,right_max)-height[i];<span class="comment">//遍历到当前元素所接雨水总数</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">max</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b )</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(a&gt;b) <span class="keyword">return</span> a;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> <span class="title function_">min</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span>(a&lt;b) <span class="keyword">return</span> a;</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> b;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="动态规划"><a href="#动态规划" class="headerlink" title="动态规划"></a>动态规划</h2><p>动态规划，可理解为“用空间换时间”，也就是说，空间复杂度增大，但是时间复杂度降低。（另外避免一些重复计算）<br>上文暴力解法，在内层for去寻找左右max的时候，其实是有重复计算的，而利用额外的空间去存储前一个状态的左右max则可以避免这些重复计算。</p>
+<p>即：创建两个数组（l_max,r_max）去存储，l_max[i]和r_max[i]在index&#x3D;i的时候，其左右各自最高的高度。</p>
+<blockquote>
+<p>时间空间复杂度都是O(N).</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> height.length;</span><br><span class="line">        <span class="keyword">if</span>(len&lt;=<span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span>[] l_max = <span class="keyword">new</span> <span class="title class_">int</span>[len];</span><br><span class="line">        <span class="type">int</span>[] r_max = <span class="keyword">new</span> <span class="title class_">int</span>[len];</span><br><span class="line">        l_max[<span class="number">0</span>] = height[<span class="number">0</span>];</span><br><span class="line">        r_max[len-<span class="number">1</span>] = height[len-<span class="number">1</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt; len; i++) &#123;</span><br><span class="line">            l_max[i] = Math.max(height[i],l_max[i-<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span>(<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> len-<span class="number">2</span>; i&gt;=<span class="number">0</span>;i--)&#123;</span><br><span class="line">            r_max[i] = Math.max(height[i],r_max[i+<span class="number">1</span>]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">            res += Math.min(l_max[i],r_max[i])-height[i];</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="单调栈"><a href="#单调栈" class="headerlink" title="单调栈"></a>单调栈</h2><p>从横向去考虑问题，用单调（递减）栈。<br>即：height[i]比stack的height[peek]小的时候才入栈，否则出栈，出栈则计算接水量。</p>
+<blockquote>
+<p>单调栈解法的时间复杂度O(N),空间复杂度也是O(N)</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line">    <span class="comment">// 单调“递减”栈</span></span><br><span class="line">    <span class="keyword">public</span> <span class="type">int</span> <span class="title function_">trap4</span><span class="params">(<span class="type">int</span>[] height)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> height.length;</span><br><span class="line">        <span class="keyword">if</span>(len&lt;=<span class="number">1</span>) <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">res</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        Deque&lt;Integer&gt; stack = <span class="keyword">new</span> <span class="title class_">ArrayDeque</span>&lt;&gt;();</span><br><span class="line">        <span class="type">int</span>[] new_height = <span class="keyword">new</span> <span class="title class_">int</span>[len+<span class="number">2</span>];</span><br><span class="line">        System.arraycopy(height,<span class="number">0</span>,new_height,<span class="number">1</span>,len);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; len+<span class="number">2</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">while</span>(!stack.isEmpty() &amp;&amp; new_height[i]&gt;new_height[stack.peek()])&#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">cur</span> <span class="operator">=</span> stack.pop();</span><br><span class="line">                <span class="keyword">if</span>(stack.isEmpty())</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                <span class="type">int</span> <span class="variable">pk</span> <span class="operator">=</span> stack.peek();</span><br><span class="line">                <span class="type">int</span> <span class="variable">area</span> <span class="operator">=</span> (i - pk - <span class="number">1</span>) * (Math.min(new_height[pk], new_height[i]) - new_height[cur]);</span><br><span class="line">                res += area;</span><br><span class="line">                <span class="comment">// System.out.println(pk);</span></span><br><span class="line">            &#125;</span><br><span class="line">            stack.push(i);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> res;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/08/15/lc-knowledge/" title="刷题-复杂度">https://hengqu4.github.io/2023/08/15/lc-knowledge/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/31/redis-knowledge/" rel="prev" title="Redis">
+                  <i class="fa fa-chevron-left"></i> Redis
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/08/18/message-queue/" rel="next" title="消息队列">
+                  消息队列 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":150,"height":200,"position":"right","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

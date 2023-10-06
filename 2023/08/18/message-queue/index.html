@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="消息队列">
+<meta property="og:url" content="https://hengqu4.github.io/2023/08/18/message-queue/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hengqu4.github.io/2023/08/18/message-queue/img1.webp">
+<meta property="article:published_time" content="2023-08-17T16:45:44.000Z">
+<meta property="article:modified_time" content="2023-08-17T16:53:23.156Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="Java,Go,React,Vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hengqu4.github.io/2023/08/18/message-queue/img1.webp">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/08/18/message-queue/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/08/18/message-queue/","path":"2023/08/18/message-queue/","title":"消息队列"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>消息队列 | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97"><span class="nav-number">2.</span> <span class="nav-text">常见的消息队列</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">3.</span> <span class="nav-text">应用场景</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/08/18/message-queue/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="消息队列 | Hengqu4">
+      <meta itemprop="description" content=" ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          消息队列
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2023-08-18 00:45:44 / 修改时间：00:53:23" itemprop="dateCreated datePublished" datetime="2023-08-18T00:45:44+08:00">2023-08-18</time>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p>消息队列（Message Queue）是一种应用间的通信方式，消息发送后可以立即返回，有消息系统来确保信息的可靠专递。<br>消息发布者只管把消息发布到MQ中而不管谁来取，消息使用者只管从MQ中取消息而不管谁发布的。<br>发布者和使用者都不用知道对方的存在。<br><img src="/2023/08/18/message-queue/img1.webp" alt="page-img1" title="消息队列结构"></p>
+<ul>
+<li>Producer：消息生产者，负责产生和发送消息到 Broker；</li>
+<li>Broker：消息处理中心。负责消息存储、确认、重试等，一般其中会包含多个 queue；</li>
+<li>Consumer：消息消费者，负责从 Broker 中获取消息，并进行相应处理；</li>
+</ul>
+<h1 id="常见的消息队列"><a href="#常见的消息队列" class="headerlink" title="常见的消息队列"></a>常见的消息队列</h1><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>ActiveMQ</th>
+<th>RabbitMQ</th>
+<th>Kafka</th>
+<th>RocketMQ</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>PRODUCER-COMSUMER</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>PUBLISH-SUBSCRIBE</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>REQUEST-REPLY</td>
+<td>支持</td>
+<td>支持</td>
+<td>-</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>API完备性</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>低（静态配置）</td>
+</tr>
+<tr>
+<td>多语言支持</td>
+<td>支持，JAVA优先</td>
+<td>语言无关</td>
+<td>支持，JAVA优先</td>
+<td>支持</td>
+</tr>
+<tr>
+<td>单机呑吐量</td>
+<td>万级</td>
+<td>万级</td>
+<td>十万级</td>
+<td>单机万级</td>
+</tr>
+<tr>
+<td>消息延迟</td>
+<td>-</td>
+<td>微秒级</td>
+<td>毫秒级</td>
+<td>-</td>
+</tr>
+<tr>
+<td>可用性</td>
+<td>高（主从）</td>
+<td>高（主从）</td>
+<td>非常高（分布式）</td>
+<td>高</td>
+</tr>
+<tr>
+<td>消息丢失</td>
+<td>-</td>
+<td>低</td>
+<td>理论上不会丢失</td>
+<td>-</td>
+</tr>
+<tr>
+<td>消息重复</td>
+<td>-</td>
+<td>可控制</td>
+<td>理论上会有重复</td>
+<td>-</td>
+</tr>
+<tr>
+<td>文档的完备性</td>
+<td>高</td>
+<td>高</td>
+<td>高</td>
+<td>中</td>
+</tr>
+<tr>
+<td>提供快速入门</td>
+<td>有</td>
+<td>有</td>
+<td>有</td>
+<td>无</td>
+</tr>
+<tr>
+<td>首次部署难度</td>
+<td>-</td>
+<td>低</td>
+<td>中</td>
+<td>高</td>
+</tr>
+</tbody></table>
+<h1 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h1><ul>
+<li><strong>异步处理</strong>：消息队列的主要特点是异步处理，主要目的是减少请求响应时间，实现非核心流程异步化，提高系统响应性能。<blockquote>
+<p>场景：将比较耗时而且不需要即时（同步）返回结果的操作，作为消息放入消息队列。</p>
+</blockquote>
+</li>
+<li><strong>应用解耦</strong>：使用了消息队列后，只要保证消息格式不变，消息的发送方和接收方并不需要彼此联系，也不需要受对方的影响，即解耦。每个成员不必受其他成员影响，可以更独立自主，只通过消息队列MQ来联系。<blockquote>
+<p>用户下订单流程，下订单后会发生扣库存这个动作，上游系统订单和下游系统扣库存，就可以通过上图的消息队列MQ来联系，扣库存异步化，从而实现订单系统与库存系统的应用解耦。</p>
+</blockquote>
+</li>
+<li><strong>流量削锋</strong>：流量削锋也是消息队列中的常用场景，一般在秒杀或团抢活动中使用广泛。<blockquote>
+<p>应用场景：秒杀活动，一般会因为流量过大，导致流量暴增，应用挂掉。为解决这个问题，一般需要在应用前端加入消息队列。</p>
+</blockquote>
+</li>
+<li><strong>日志处理</strong>：日志处理是指将消息队列用在日志处理中，比如Kafka的应用，解决大量日志传输的问题。</li>
+<li><strong>消息通讯</strong>：消息队列一般都内置了高效的通信机制，因此也可以用于单纯的消息通讯，比如实现点对点消息队列或者聊天室等。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/08/18/message-queue/" title="消息队列">https://hengqu4.github.io/2023/08/18/message-queue/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/08/15/lc-knowledge/" rel="prev" title="刷题-复杂度">
+                  <i class="fa fa-chevron-left"></i> 刷题-复杂度
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":150,"height":200,"position":"right","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>

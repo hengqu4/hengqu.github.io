@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/cat_2.svg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/cat_2.svg">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha256-HtsXJanqjKTc8vVQjO4YMhiqFoXkfBsjBWcX91T1jr8=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"hengqu4.github.io","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.17.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js"></script>
+
+    <meta property="og:type" content="article">
+<meta property="og:title" content="kafka">
+<meta property="og:url" content="https://hengqu4.github.io/2023/07/26/kafka/index.html">
+<meta property="og:site_name" content="Hengqu4">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://hengqu4.github.io/2023/07/26/kafka/kafka-art.png">
+<meta property="article:published_time" content="2023-07-26T05:28:33.000Z">
+<meta property="article:modified_time" content="2023-08-18T08:59:46.469Z">
+<meta property="article:author" content="hengqu4">
+<meta property="article:tag" content="消息队列">
+<meta property="article:tag" content="Kafka">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://hengqu4.github.io/2023/07/26/kafka/kafka-art.png">
+
+
+<link rel="canonical" href="https://hengqu4.github.io/2023/07/26/kafka/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://hengqu4.github.io/2023/07/26/kafka/","path":"2023/07/26/kafka/","title":"kafka"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>kafka | Hengqu4</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Hengqu4</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">The best time is now.</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Producer%E3%80%81Consumer"><span class="nav-number">1.1.</span> <span class="nav-text">Producer、Consumer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Topic%E3%80%81Partition"><span class="nav-number">1.2.</span> <span class="nav-text">Topic、Partition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker%E3%80%81Cluster"><span class="nav-number">1.3.</span> <span class="nav-text">Broker、Cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A4%9A%E9%9B%86%E7%BE%A4"><span class="nav-number">1.4.</span> <span class="nav-text">多集群</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pull-%E6%A8%A1%E5%9E%8B"><span class="nav-number">2.</span> <span class="nav-text">pull 模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E4%B8%A2%E5%A4%B1"><span class="nav-number">3.</span> <span class="nav-text">消息丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Producer%E4%B8%A2%E5%A4%B1"><span class="nav-number">3.1.</span> <span class="nav-text">Producer丢失</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Broker%E6%8C%81%E4%B9%85%E5%8C%96%E4%B8%A2%E5%A4%B1"><span class="nav-number">3.2.</span> <span class="nav-text">Broker持久化丢失</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-number">3.2.1.</span> <span class="nav-text">解决方案</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consumer%E6%B6%88%E8%B4%B9%E4%B8%A2%E5%A4%B1"><span class="nav-number">3.3.</span> <span class="nav-text">Consumer消费丢失</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B6%88%E6%81%AF%E9%87%8D%E5%A4%8D"><span class="nav-number">4.</span> <span class="nav-text">消息重复</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Producer%E9%87%8D%E5%A4%8D%E5%8F%91%E9%80%81"><span class="nav-number">4.1.</span> <span class="nav-text">Producer重复发送</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Consumer%E9%87%8D%E5%A4%8D%E6%B6%88%E8%B4%B9"><span class="nav-number">4.2.</span> <span class="nav-text">Consumer重复消费</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8E%9F%E5%9B%A0"><span class="nav-number">4.2.1.</span> <span class="nav-text">原因</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88-1"><span class="nav-number">4.2.2.</span> <span class="nav-text">解决方案</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#zk%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-number">5.</span> <span class="nav-text">zk的作用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Rebalance-%E9%87%8D%E5%B9%B3%E8%A1%A1"><span class="nav-number">6.</span> <span class="nav-text">Rebalance&#x2F;重平衡</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A6%E5%8F%91%E6%9D%A1%E4%BB%B6"><span class="nav-number">6.1.</span> <span class="nav-text">触发条件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Coordinator"><span class="nav-number">6.2.</span> <span class="nav-text">Coordinator</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B6%88%E8%B4%B9%E7%BB%84leader"><span class="nav-number">6.3.</span> <span class="nav-text">消费组leader</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rebalance%E6%B5%81%E7%A8%8B"><span class="nav-number">6.4.</span> <span class="nav-text">Rebalance流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Join"><span class="nav-number">6.4.1.</span> <span class="nav-text">Join</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Sync"><span class="nav-number">6.4.2.</span> <span class="nav-text">Sync</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%81%BF%E5%85%8DRebalance"><span class="nav-number">6.5.</span> <span class="nav-text">避免Rebalance</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E4%BF%9D%E8%AF%81%E5%8F%AF%E9%9D%A0%E6%80%A7"><span class="nav-number">7.</span> <span class="nav-text">如何保证可靠性</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="hengqu4"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">hengqu4</p>
+  <div class="site-description" itemprop="description">Master of Software Engineering</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">24</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">35</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/hengqu4" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;hengqu4" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:jxy2000910@gmail.com" title="E-Mail → mailto:jxy2000910@gmail.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://hengqu4.github.io/2023/07/26/kafka/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="hengqu4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hengqu4">
+      <meta itemprop="description" content="Master of Software Engineering">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="kafka | Hengqu4">
+      <meta itemprop="description" content=" ">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          kafka
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-07-26 13:28:33" itemprop="dateCreated datePublished" datetime="2023-07-26T13:28:33+08:00">2023-07-26</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2023-08-18 16:59:46" itemprop="dateModified" datetime="2023-08-18T16:59:46+08:00">2023-08-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" itemprop="url" rel="index"><span itemprop="name">消息队列</span></a>
+        </span>
+          ，
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/Kafka/" itemprop="url" rel="index"><span itemprop="name">Kafka</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description"> </div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>Kafka 是一种分布式的，基于发布 &#x2F; 订阅的消息系统。主要设计目标如下：</p>
+<ul>
+<li>高可用：多副本机制。</li>
+<li>高并发：网络架构设计 三层架构：多selector -&gt; 多线程 -&gt; 队列的设计（NIO） </li>
+<li>高性能：<ul>
+<li>写数据：1.把数据先写入到OS Cache；2.写到磁盘上面是顺序写，性能很高。</li>
+<li>读数据：1.根据稀疏索引，快速定位到要消费的数据；2.零拷贝机制 减少数据的拷贝 减少了应用程序与操作系统上下文切换。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2023/07/26/kafka/kafka-art.png" alt="page-imgt1" title="Kafka架构图"></p>
+<h3 id="Producer、Consumer"><a href="#Producer、Consumer" class="headerlink" title="Producer、Consumer"></a>Producer、Consumer</h3><p>客户端有两种基本类型：</p>
+<ul>
+<li>生产者（Producer）：创建消息。</li>
+<li>消费者（Consumer）：负责消费&#x2F;读取消息。</li>
+</ul>
+<h3 id="Topic、Partition"><a href="#Topic、Partition" class="headerlink" title="Topic、Partition"></a>Topic、Partition</h3><p>消息以主题（Topic）来分类，每一个主题都对应一个「消息队列」，类似于数据库中的表。<br>默认一个topic有一个分区（partition），自己可设置多个分区（分区分散存储在服务器不同节点上）。</p>
+<h3 id="Broker、Cluster"><a href="#Broker、Cluster" class="headerlink" title="Broker、Cluster"></a>Broker、Cluster</h3><p>Kafka集群中，一个kafka服务器就是一个broker，它接受生产者发送的消息并存入磁盘。<br>若干个 Broker 组成一个集群（Cluster），集群内某个 Broker 会成为集群控制器（Cluster Controller），它负责管理集群，包括分配分区到 Broker、监控 Broker 故障等。</p>
+<p>在集群内，一个分区（partition）由一个 Broker 负责，这个 Broker 也称为这个分区的 Leader；<br>一个分区（partition）可以被复制到多个 Broker 上来实现冗余，这样当存在 Broker 故障时可以将其分区重新分配到其他 Broker 来负责。</p>
+<h3 id="多集群"><a href="#多集群" class="headerlink" title="多集群"></a>多集群</h3><p>当构建多个数据中心时，往往需要实现消息互通。举个例子，假如用户修改了个人资料，那么后续的请求无论被哪个数据中心处理，这个更新需要反映出来。又或者，多个数据中心的数据需要汇总到一个总控中心来做数据分析。</p>
+<p>上面说的分区复制冗余机制只适用于同一个 Kafka 集群内部，对于多个 Kafka 集群消息同步可以使用 Kafka 提供的 MirrorMaker 工具。本质上来说，MirrorMaker 只是一个 Kafka 消费者和生产者，并使用一个队列连接起来而已。它从一个集群中消费消息，然后往另一个集群生产消息。</p>
+<h2 id="pull-模型"><a href="#pull-模型" class="headerlink" title="pull 模型"></a>pull 模型</h2><p>消费者应该向 Broker 要数据（pull）还是 Broker 向消费者推送数据（push）？</p>
+<blockquote>
+<p>作为一个消息系统，Kafka 遵循了传统的方式，选择由 Producer 向 broker push 消息并由 Consumer 从 broker pull 消息。<br>一些 logging-centric system，比如 Facebook 的Scribe和 Cloudera 的Flume，采用 push 模式。<br>push 模式和 pull 模式各有优劣。</p>
+</blockquote>
+<p>push 模式很难适应消费速率不同的消费者。<br>因为消息发送速率是由 broker 决定的。push 模式的目标是尽可能以最快速度传递消息，但是这样很容易造成 Consumer 来不及处理消息，典型的表现就是拒绝服务以及网络拥塞。而 pull 模式则可以根据 Consumer 的消费能力以适当的速率消费消息。</p>
+<p>对于 Kafka 而言，pull 模式更合适。<br><strong>优点</strong></p>
+<ul>
+<li>pull 模式可简化 broker 的设计，Consumer 可自主控制消费消息的速率，可以自主决定是否批量的从从broker拉取数据。</li>
+<li>Consumer 可以自己控制消费方式——即可批量消费也可逐条消费，还能选择不同的提交方式从而实现不同的传输语义。</li>
+</ul>
+<p><strong>缺点</strong></p>
+<ul>
+<li>如果broker没有可供消费的消息,将导致consume不断在循环中轮询,直到新消息到达。<blockquote>
+<p>为了避免这点,Kafka有个参数可以让consumer阻塞直到新消息到达。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="消息丢失"><a href="#消息丢失" class="headerlink" title="消息丢失"></a>消息丢失</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://blog.csdn.net/u014753478/article/details/117932192">https://blog.csdn.net/u014753478/article/details/117932192</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/459610418">https://zhuanlan.zhihu.com/p/459610418</a><br><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/341546586">https://zhuanlan.zhihu.com/p/341546586</a></p>
+</blockquote>
+<p>Kafka 中有三次消息传递过程（这三步中每一步都可能会出现丢失数据的情况）：</p>
+<ol>
+<li>Producer 端发送消息给 Kafka Broker 端。</li>
+<li>Kafka Broker 将消息进行同步，并且持久化数据。</li>
+<li>Consumer 端从Kafka Broker 将消息拉取并进行消费。</li>
+</ol>
+<h3 id="Producer丢失"><a href="#Producer丢失" class="headerlink" title="Producer丢失"></a>Producer丢失</h3><ol>
+<li>生产者是与leader直接交互，所以先从集群获取topic对应分区的leader元数据；</li>
+<li>获取到leader分区元数据后直接将消息发给过去；</li>
+<li>Kafka Broker对应的leader分区收到消息后写入文件持久化；</li>
+<li>Follower拉取Leader消息与Leader的数据保持一致；</li>
+<li>Follower消息拉取完毕需要给Leader回复ACK确认消息；</li>
+<li>Kafka Leader和Follower分区同步完，Leader分区会给生产者回复ACK确认消息。</li>
+</ol>
+<p>生产者发送消息到broker是会存在消息丢失的，大多可能是由于网络原因引起的，消息中间件中一般都是通过ack来解决这个问题的，kafka中可以通过设置ack来解决这个问题。</p>
+<p>Kafka通过配置<code>request.required.acks</code>属性来确认消息的生产</p>
+<ul>
+<li><code>ack==0</code>表示不进行消息接收是否成功的确认；不能保证消息是否发送成功，生成环境基本不会用。</li>
+<li><code>ack==1</code>表示当Leader接收成功时确认；只要Leader存活就可以保证不丢失，保证了吞吐量。</li>
+<li><code>ack==-1或者all</code>表示Leader和Follower都接收成功时确认；可以最大限度保证消息不丢失，但是吞吐量低。</li>
+</ul>
+<!-- Producer 端为了提升发送效率，减少IO操作，发送数据的时候是将多个请求合并成（被合并的请求先缓存在本地buffer中），并将其封装转换成 Request 请求「异步」将数据发送出去（也可以按时间间隔方式，达到时间间隔自动发送）。
+
+#### 失败原因
+* 如果producer被非法停止，buffer中的数据将会丢失，broker将无法收到该部分数据。
+* 如果producer内存不够，并且采用的策略是丢弃消息，消息也会丢失。
+* 如果消息生产过快，导致挂起线程过多，内存不足，导致程序崩溃，消息丢失。
+### 解决思路
+* 异步发送改为同步发送，或者service发送消息时，使用阻塞线程池，并且线程数量有一定上限。也就是控制消息生产速度。
+* 扩大buffer容量配置，这种方式可以缓解，但是不能避免。
+* service不直接将消息发送到buffer，而是保存到本地磁盘中，另外起一个线程进行发送。 -->
+<h3 id="Broker持久化丢失"><a href="#Broker持久化丢失" class="headerlink" title="Broker持久化丢失"></a>Broker持久化丢失</h3><p>Broker 集群接收到数据后会将数据进行持久化存储到磁盘，为了提高吞吐量和性能，采用的是「异步批量刷盘的策略」：按照一定的消息量和间隔时间进行刷盘。<br>首先会将数据存储到 「PageCache」 中，至于什么时候将 Cache 中的数据刷盘是由「操作系统」根据自己的策略决定或者调用 fsync 命令进行强制刷盘。<br>如果此时 Broker 宕机 Crash 掉，且选举了一个落后 Leader Partition 很多的 Follower Partition 成为新的 Leader Partition，那么落后的消息数据就会丢失。</p>
+<h4 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h4><p>如果broker发生故障，那么此时page cache的数据就会丢失，broker端可以设置刷盘的参数，比如多久刷盘一次，不过这个参数不建议去修改。</p>
+<p>最好的方案还是设置多副本，一个分区设置几个副本，当broker故障的时候，如果还有其他副本，那么数据就不会丢失。</p>
+<h3 id="Consumer消费丢失"><a href="#Consumer消费丢失" class="headerlink" title="Consumer消费丢失"></a>Consumer消费丢失</h3><p>Consumer的消费方式主要分为两种：</p>
+<ol>
+<li>自动提交offset, Automatic Offset Committing</li>
+<li>手动提交offset, Manual Offset Control</li>
+</ol>
+<p>Consumer自动提交机制是根据一定的时间间隔，将收到的消息进行commit。commit的过程和消费过程是异步的，也就是说可能存在消费过程未成功，但是commit已经提交了。此时消息就丢失了。</p>
+<p>解决方式是把自动提交改为手动提交。可以保证消息至少被消费一次，但是此时可能出现重复消费的情况。</p>
+<h2 id="消息重复"><a href="#消息重复" class="headerlink" title="消息重复"></a>消息重复</h2><h3 id="Producer重复发送"><a href="#Producer重复发送" class="headerlink" title="Producer重复发送"></a>Producer重复发送</h3><h3 id="Consumer重复消费"><a href="#Consumer重复消费" class="headerlink" title="Consumer重复消费"></a>Consumer重复消费</h3><h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a>原因</h4><p>数据消费完没有及时提交offset到broker。<br>消息消费端在消费过程中挂掉没有及时提交offset到broke，另一个消费端启动拿之前记录的offset开始消费，由于offset的滞后性可能会导致新启动的客户端有少量重复消费。</p>
+<h4 id="解决方案-1"><a href="#解决方案-1" class="headerlink" title="解决方案"></a>解决方案</h4><p>取消自动提交：<br>每次消费完或者程序退出时手动提交。这可能也没法保证一条重复。</p>
+<p>下游做幂等：<br>一般是让下游做幂等或者尽量每消费一条消息都记录offset，对于少数严格的场景可能需要把offset或唯一ID（例如订单ID）和下游状态更新放在同一个数据库里面做事务来保证精确的一次更新或者在下游数据表里面同时记录消费offset，然后更新下游数据的时候用消费位移做乐观锁拒绝旧位移的数据更新。</p>
+<h2 id="zk的作用"><a href="#zk的作用" class="headerlink" title="zk的作用"></a>zk的作用</h2><p>Zookeeper是分布式协调（它不是数据库）。<br>kafka中使用了zookeeper的分布式锁和分布式配置及统一命名的分布式协调解决方案。<br>在kafka的broker集群中的controller的选择,是通过zk的临时节点争抢获得的。<br>brokerlD等如果自增的话也是通过zk的节点version实现的全局唯一。<br>kafka中broker中的状态数据也是存储在zk中,不过这里要注意,zk不是数据库,所以存储的属于元数据<br>而,新旧版本变化中,就把曾经的offset从zk中迁移出了zk</p>
+<h2 id="Rebalance-重平衡"><a href="#Rebalance-重平衡" class="headerlink" title="Rebalance&#x2F;重平衡"></a>Rebalance&#x2F;重平衡</h2><blockquote>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/108564156">https://zhuanlan.zhihu.com/p/108564156</a><br><a target="_blank" rel="noopener" href="https://cloud.tencent.com/developer/article/1852157">https://cloud.tencent.com/developer/article/1852157</a></p>
+</blockquote>
+<h3 id="触发条件"><a href="#触发条件" class="headerlink" title="触发条件"></a>触发条件</h3><p>消费组有多个消费者，消费组在消费一个Topic的时候，kafka为了保证消息消费不重不漏，kafka将每个partition唯一性地分配给了消费者。但是如果某个消费组<strong>在消费的途中有消费者宕机</strong>或者<strong>有新的消费者加入</strong>的时候那么partition分配就是不公平的，可能导致某些消费者负载特别重，某些消费者又没有负载的情况。</p>
+<p>Kafka有一种专门的机制处理这种情况，这种机制称为Rebalance机制。</p>
+<p>当kafka遇到如下四种情况的时候，kafka会触发Rebalance机制：</p>
+<ul>
+<li>消费组成员发生了变更，比如有新的消费者加入了消费组组或者有消费者宕机。</li>
+<li>消费者无法在指定的时间之内完成消息的消费。</li>
+<li>消费组订阅的Topic发生了变化。</li>
+<li>订阅的Topic的partition发生了变化。</li>
+</ul>
+<h3 id="Coordinator"><a href="#Coordinator" class="headerlink" title="Coordinator"></a>Coordinator</h3><p>Coordinator是Rebalance机制中非常重要的一个角色。</p>
+<p>每个消费组都会有一个coordinator，Coordinator负责处理管理组内的消费者和位移管理，Coordinator并不负责消费组内的partition分配。消费者通过心跳的方式告知Coordinator自己仍然处于存活状态，Coordinator以session. timeout. ms参数的频率检测消费组group内消费者存活情况，该参数的默认值是10s，如果该值太大，那么coordinator需要非常长时间才能检测到消费者宕机。</p>
+<h3 id="消费组leader"><a href="#消费组leader" class="headerlink" title="消费组leader"></a>消费组leader</h3><p>在Kafka的消费端，会有一个消费者协调器以及消费组，组协调器（Group Coordinator）需要为消费组内的消费者选举出一个消费组的leader。<br>如果消费组内还没有leader，那么第一个加入消费组的消费者即为消费组的leader，如果某一个时刻leader消费者由于某些原因退出了消费组，那么就会重新选举leader，选举方式如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">private val members = <span class="built_in">new</span> mutable.HashMap[String, MemberMetadata]</span><br><span class="line">leaderId = members.keys.headOption</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>在组协调器中消费者的信息是以HashMap的形式存储的，其中key为消费者的member_id，而value是消费者相关的元数据信息。而leader的取值为HashMap中的第一个键值对的key（等同于随机）。</p>
+</blockquote>
+<p>消费组的Leader和Coordinator没有关联。<br>消费组的leader负责Rebalance过程中消费分配方案的制定。</p>
+<h3 id="Rebalance流程"><a href="#Rebalance流程" class="headerlink" title="Rebalance流程"></a>Rebalance流程</h3><blockquote>
+<p>Rebalance 发生时，Group 下所有Consumer 实例都会协调在一起共同参与，kafka 能够保证尽量达到最公平的分配。但是 Rebalance 过程对 consumer group 会造成比较严重的影响。<br>在 Rebalance 的过程中 <strong>consumer group 下的所有消费者实例都会停止工作</strong>，等待 Rebalance 过程完成。</p>
+</blockquote>
+<h4 id="Join"><a href="#Join" class="headerlink" title="Join"></a>Join</h4><p>所有成员都向Group Coordinator发送JoinGroup请求，请求加入消费组。<br>一旦所有成员都发送了JoinGroup请求，Coordinator会从中选择一个Consumer担任leader的角色，并把组成员信息以及订阅信息发给leader。</p>
+<blockquote>
+<p>注意leader和coordinator不是一个概念。leader负责消费分配方案的制定。</p>
+</blockquote>
+<h4 id="Sync"><a href="#Sync" class="headerlink" title="Sync"></a>Sync</h4><p>这一步leader开始分配消费方案，即哪个consumer负责消费哪些topic的哪些partition。<br>一旦完成分配，leader会将这个方案封装进SyncGroup请求中发给coordinator。（非leader也会发SyncGroup请求，只是内容为空。）</p>
+<p>coordinator接收到分配方案之后会把方案塞进SyncGroup的response中发给各个consumer。这样组内的所有成员就都知道自己应该消费哪些分区了。</p>
+<h3 id="避免Rebalance"><a href="#避免Rebalance" class="headerlink" title="避免Rebalance"></a>避免Rebalance</h3><p>后两个时机是可以人为避免的（订阅topic或者Topic的partition发生了变化）。发生Rebalance最常见的原因是消费组成员个数发生变化。这其中消费者成员正常的添加和停掉导致Rebalance，也是无法避免。</p>
+<p>但是在某些情况下，Consumer实例会被Coordinator错误地认为已停止从而被踢出Group。从而导致rebalance。<br>这种情况可以通过Consumer端的参数<code>session.timeout.ms</code>和<code>max.poll.interval.ms</code>进行配置。</p>
+<p>Consumer还提供了控制发送心跳请求频率的参数，就是<code>heartbeat.interval.ms</code>。<br>这个值设置得越小，Consumer实例发送心跳请求的频率就越高。频繁地发送心跳请求会额外消耗带宽资源，但好处是能够更快地知道是否开启Rebalance，因为Coordinator通知各个Consumer实例是否开启Rebalance就是将REBALANCE_NEEDED标志封装进心跳请求的响应体中。</p>
+<p>总之，要为业务处理逻辑留下充足的时间使Consumer不会因为处理这些消息的时间太长而引发Rebalance，但也不能时间设置过长导致Consumer宕机但迟迟没有被踢出Group。</p>
+<h2 id="如何保证可靠性"><a href="#如何保证可靠性" class="headerlink" title="如何保证可靠性"></a>如何保证可靠性</h2><ul>
+<li>对于一个分区来说，它的消息是有序的。如果一个生产者向一个分区先写入消息A，然后写入消息B，那么消费者会先读取消息A再读取消息B。</li>
+<li>当消息写入所有in-sync状态的副本后，消息才会认为已提交（committed）。这里的写入有可能只是写入到文件系统的缓存，不一定刷新到磁盘。生产者可以等待不同时机的确认，比如等待分区主副本写入即返回，后者等待所有in-sync状态副本写入才返回。</li>
+<li>一旦消息已提交，那么只要有一个副本存活，数据不会丢失。</li>
+<li>消费者只能读取到已提交的消息。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          
+
+<div class="post-copyright">
+<ul>
+  <li class="post-copyright-author">
+      <strong>本文作者： </strong>hengqu4
+  </li>
+  <li class="post-copyright-link">
+      <strong>本文链接：</strong>
+      <a href="https://hengqu4.github.io/2023/07/26/kafka/" title="kafka">https://hengqu4.github.io/2023/07/26/kafka/</a>
+  </li>
+  <li class="post-copyright-license">
+      <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+          <div class="post-tags">
+              <a href="/tags/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/" rel="tag"># 消息队列</a>
+              <a href="/tags/Kafka/" rel="tag"># Kafka</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/07/26/nacos/" rel="prev" title="了解nacos">
+                  <i class="fa fa-chevron-left"></i> 了解nacos
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/07/30/java-knowledge/" rel="next" title="Java知识库">
+                  Java知识库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2023</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">hengqu4</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"model":{"scale":1,"hHeadPos":0.5,"vHeadPos":0.618,"jsonPath":"/live2dw/assets/tororo.model.json"},"display":{"superSample":2,"width":150,"height":200,"position":"right","hOffset":20,"vOffset":20},"mobile":{"show":false,"scale":0.5},"react":{"opacityDefault":0.7,"opacityOnHover":0.2},"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
